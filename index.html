@@ -496,7 +496,7 @@ async function enviar(){
     const systemPrompt = `Eres el asistente "EN CORTO" de una plataforma educativa tecnológica para México. Eres experto en: Electrónica, Robótica, Electricidad industrial, Automatización (PLC/SCADA/Siemens), Programación (Python, C++, Arduino, lenguaje ladder) y Matemáticas técnicas (álgebra, cálculo, Laplace). REGLAS: Responde SIEMPRE en español. Sé conciso y claro (máximo 5 párrafos). Usa ejemplos prácticos. Tono amigable y directo. Si el código es necesario ponlo limpio. Si preguntan algo fuera de tecnología, redirige amablemente al tema técnico.`;
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
