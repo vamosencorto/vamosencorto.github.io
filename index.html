@@ -6,537 +6,1443 @@
 <title>EN CORTO — Plataforma Educativa Tecnológica</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#05080f;--bg2:#0c1220;--card:#0f1826;--card2:#141f30;
-  --border:rgba(0,255,180,0.12);--border2:rgba(0,255,180,0.25);
-  --accent:#00ffb4;--accent2:#ff6b35;--accent3:#4d9fff;--yellow:#ffe033;
-  --text:#dde6f0;--muted:#5a7a9a;
+:root{
+  --red:#e63946;--red2:#c1121f;--blue:#1d3557;--blue2:#457b9d;
+  --blue3:#a8dadc;--white:#ffffff;--off:#f4f6f9;--off2:#eef2f7;
+  --text:#0f172a;--muted:#64748b;--border:#e2e8f0;
   --font:'Outfit',sans-serif;--display:'Syne',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden;}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+body{background:var(--white);color:var(--text);font-family:var(--font);overflow-x:hidden;cursor:none;}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:62px;background:rgba(5,8,15,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
-.logo{font-family:var(--display);font-size:1.4rem;font-weight:800;color:var(--accent);letter-spacing:-1px;cursor:pointer;}
-.logo em{color:var(--text);font-style:normal;}
-.nav-links{display:flex;gap:2rem;list-style:none;}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color .2s;font-family:var(--mono);}
-.nav-links a:hover{color:var(--accent);}
-.nav-chat-btn{background:var(--accent);color:#000;border:none;padding:8px 20px;border-radius:6px;font-weight:700;font-size:0.85rem;cursor:pointer;font-family:var(--display);transition:box-shadow .2s,transform .2s;}
-.nav-chat-btn:hover{box-shadow:0 0 20px rgba(0,255,180,0.4);transform:translateY(-1px);}
+/* CURSOR PERSONALIZADO */
+#cursor{position:fixed;width:12px;height:12px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .3s var(--ease),height .3s var(--ease),background .3s;mix-blend-mode:multiply;}
+#cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid rgba(230,57,70,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s var(--ease),width .4s var(--ease),height .4s var(--ease),opacity .3s;}
+body:hover #cursor{opacity:1;}
+.cursor-grow #cursor{width:50px;height:50px;background:rgba(230,57,70,.15);}
+.cursor-grow #cursor-ring{opacity:0;}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7rem 2rem 4rem;text-align:center;position:relative;overflow:hidden;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,180,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,180,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);}
-.hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(0,255,180,0.08) 0%,transparent 70%);pointer-events:none;}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,180,0.08);border:1px solid var(--border2);color:var(--accent);padding:6px 18px;border-radius:4px;font-family:var(--mono);font-size:0.75rem;letter-spacing:1px;margin-bottom:2rem;position:relative;z-index:1;}
-.hero h1{font-family:var(--display);font-size:clamp(3rem,8vw,6rem);font-weight:800;line-height:1;margin-bottom:1rem;position:relative;z-index:1;letter-spacing:-2px;}
-.hero h1 .line1{display:block;color:var(--text);}
-.hero h1 .line2{display:block;background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 4s linear infinite;}
-@keyframes shine{to{background-position:200% center;}}
-.hero p{font-size:1.05rem;color:var(--muted);max-width:580px;line-height:1.8;margin-bottom:2.5rem;position:relative;z-index:1;}
-.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
-.btn-main{background:var(--accent);color:#000;padding:14px 36px;border-radius:6px;font-weight:700;font-size:1rem;border:none;cursor:pointer;font-family:var(--display);transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-block;}
-.btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,255,180,0.3);}
-.btn-ghost{background:transparent;color:var(--text);padding:14px 36px;border-radius:6px;font-weight:600;font-size:1rem;border:1px solid var(--border2);cursor:pointer;font-family:var(--font);transition:all .2s;text-decoration:none;display:inline-block;}
-.btn-ghost:hover{background:rgba(0,255,180,0.06);border-color:var(--accent);}
-.stats-bar{display:flex;flex-wrap:wrap;justify-content:center;border:1px solid var(--border);border-radius:12px;margin:3rem auto 0;max-width:700px;overflow:hidden;position:relative;z-index:1;}
-.stat-item{flex:1;min-width:140px;padding:1.5rem 1rem;text-align:center;border-right:1px solid var(--border);}
-.stat-item:last-child{border-right:none;}
-.stat-num{font-family:var(--mono);font-size:1.6rem;font-weight:500;color:var(--accent);}
-.stat-lbl{font-size:0.78rem;color:var(--muted);margin-top:4px;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--red);}
 
-/* TEMAS */
-.temas-section{padding:5rem 2rem;max-width:1200px;margin:0 auto;}
-.sec-label{font-family:var(--mono);font-size:0.72rem;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;}
-.sec-title{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:0.75rem;letter-spacing:-1px;}
-.sec-sub{color:var(--muted);font-size:1rem;line-height:1.7;margin-bottom:3rem;max-width:550px;}
-.temas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.tema-card{background:var(--card);padding:2rem;cursor:pointer;transition:background .2s;position:relative;}
-.tema-card:hover{background:var(--card2);}
-.tema-icon{font-size:2.2rem;margin-bottom:1rem;display:block;}
-.tema-nombre{font-family:var(--display);font-size:1.15rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.5px;}
-.tema-desc{font-size:0.88rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
-.tema-tags{display:flex;flex-wrap:wrap;gap:6px;}
-.tag{font-family:var(--mono);font-size:0.7rem;padding:3px 10px;border-radius:3px;border:1px solid;}
-.tema-count{position:absolute;top:1.5rem;right:1.5rem;font-family:var(--mono);font-size:0.7rem;color:var(--muted);}
+/* ── PROGRESS BAR ── */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--red),#ff6b6b,var(--blue));z-index:400;width:0%;transition:width .1s linear;}
 
-/* RECURSOS */
-.recursos-section{padding:5rem 2rem;max-width:1200px;margin:0 auto;}
-.filtros{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2.5rem;}
-.filtro-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:7px 18px;border-radius:4px;font-size:0.82rem;cursor:pointer;font-family:var(--mono);transition:all .2s;}
-.filtro-btn.active,.filtro-btn:hover{background:var(--accent);color:#000;border-color:var(--accent);}
-.recursos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
-.recurso-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;cursor:pointer;transition:border-color .2s,transform .2s;position:relative;}
-.recurso-card:hover{border-color:var(--border2);transform:translateY(-2px);}
-.recurso-tipo{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:0.68rem;padding:4px 10px;border-radius:3px;margin-bottom:1rem;letter-spacing:0.5px;}
-.tipo-libro{background:rgba(0,255,180,0.1);color:var(--accent);border:1px solid rgba(0,255,180,0.2);}
-.tipo-video{background:rgba(255,107,53,0.1);color:var(--accent2);border:1px solid rgba(255,107,53,0.2);}
-.tipo-teoria{background:rgba(77,159,255,0.1);color:var(--accent3);border:1px solid rgba(77,159,255,0.2);}
-.tipo-practica{background:rgba(255,224,51,0.1);color:var(--yellow);border:1px solid rgba(255,224,51,0.2);}
-.recurso-titulo{font-family:var(--display);font-weight:700;font-size:1rem;margin-bottom:0.4rem;}
-.recurso-meta{font-size:0.82rem;color:var(--muted);margin-bottom:0.75rem;}
-.recurso-tema{display:inline-block;font-family:var(--mono);font-size:0.68rem;padding:3px 8px;border-radius:3px;background:var(--bg2);color:var(--muted);}
-.recurso-link{position:absolute;top:1.5rem;right:1.5rem;color:var(--muted);font-size:0.9rem;transition:color .2s;}
-.recurso-card:hover .recurso-link{color:var(--accent);}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:68px;background:rgba(255,255,255,.95);backdrop-filter:blur(24px);border-bottom:1px solid transparent;transition:all .4s var(--ease);}
+nav.scrolled{border-color:var(--border);box-shadow:0 8px 40px rgba(0,0,0,.06);}
+.logo{font-family:var(--display);font-size:1.5rem;font-weight:800;cursor:none;letter-spacing:-1px;}
+.logo span{color:var(--red);}
+.logo em{color:var(--blue);font-style:normal;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.83rem;font-weight:600;font-family:var(--mono);position:relative;cursor:none;letter-spacing:.3px;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--red);transition:width .35s var(--ease);}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after{width:100%;}
+.nav-btn{background:var(--red);color:#fff;border:none;padding:10px 26px;border-radius:4px;font-weight:700;font-size:.83rem;cursor:none;font-family:var(--display);transition:all .3s var(--ease);letter-spacing:.3px;position:relative;overflow:hidden;}
+.nav-btn::before{content:'';position:absolute;inset:0;background:var(--red2);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease);}
+.nav-btn:hover::before{transform:scaleX(1);}
+.nav-btn span{position:relative;z-index:1;}
 
-/* CHAT */
-.chat-section{padding:5rem 2rem;max-width:900px;margin:0 auto;}
-.chat-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
-.chat-header{background:var(--card2);border-bottom:1px solid var(--border);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:12px;}
-.bot-avatar{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#4285f4,#34a853);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#fff;font-family:var(--display);flex-shrink:0;}
-.bot-name{font-family:var(--display);font-weight:700;font-size:1rem;}
-.bot-status{font-family:var(--mono);font-size:0.72rem;color:var(--accent);display:flex;align-items:center;gap:6px;}
-.bot-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+/* ── HERO ── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:8rem 3rem 4rem;position:relative;overflow:hidden;gap:4rem;max-width:1400px;margin:0 auto;}
+.hero-left{position:relative;z-index:2;}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;margin-bottom:2rem;opacity:0;animation:revealUp .8s var(--ease) .1s forwards;}
+.htag-line{width:32px;height:2px;background:var(--red);}
+.htag-text{font-family:var(--mono);font-size:.72rem;color:var(--red);letter-spacing:3px;text-transform:uppercase;}
+.hero h1{font-family:var(--display);font-size:clamp(3.5rem,6vw,5.5rem);font-weight:800;line-height:.95;letter-spacing:-3px;overflow:hidden;}
+.h1-line{display:block;overflow:hidden;}
+.h1-inner{display:block;transform:translateY(110%);animation:lineUp .9s var(--ease) forwards;}
+.h1-inner.d1{animation-delay:.25s;}
+.h1-inner.d2{animation-delay:.4s;color:var(--red);}
+.h1-inner.d3{animation-delay:.55s;color:var(--blue);font-size:clamp(1.8rem,3vw,2.8rem);letter-spacing:-1px;font-weight:600;}
+@keyframes lineUp{from{transform:translateY(110%);}to{transform:translateY(0);}}
+@keyframes revealUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero-sub{font-size:1.05rem;color:var(--muted);line-height:1.8;margin:1.5rem 0 2.5rem;max-width:480px;opacity:0;animation:revealUp .8s var(--ease) .7s forwards;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:revealUp .8s var(--ease) .85s forwards;}
+.btn-primary{background:var(--red);color:#fff;padding:15px 36px;border-radius:4px;font-weight:700;font-size:.95rem;border:none;cursor:none;font-family:var(--display);position:relative;overflow:hidden;text-decoration:none;display:inline-block;transition:transform .3s var(--ease),box-shadow .3s;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:var(--red2);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(230,57,70,.4);}
+.btn-primary:hover::before{transform:scaleX(1);}
+.btn-primary span{position:relative;z-index:1;}
+.btn-sec{background:transparent;color:var(--blue);padding:15px 36px;border-radius:4px;font-weight:600;font-size:.95rem;border:2px solid var(--blue);cursor:none;font-family:var(--font);text-decoration:none;display:inline-block;transition:all .3s var(--ease);}
+.btn-sec:hover{background:var(--blue);color:#fff;transform:translateY(-3px);}
 
-/* BANNER GEMINI GRATIS */
-.gemini-banner{
-  background:linear-gradient(135deg,rgba(66,133,244,0.15),rgba(52,168,83,0.15));
-  border-bottom:1px solid rgba(66,133,244,0.3);
-  padding:0.85rem 1.5rem;
-  display:flex;align-items:center;gap:10px;
-  font-size:0.82rem;
+/* HERO RIGHT — imagen con clip-path */
+.hero-right{position:relative;opacity:0;animation:revealUp .9s var(--ease) .5s forwards;}
+.hero-img-wrap{position:relative;border-radius:12px;overflow:hidden;height:580px;}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover;transform:scale(1.05);transition:transform 8s linear;}
+.hero-img-wrap:hover img{transform:scale(1);}
+.hero-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(29,53,87,.7),rgba(230,57,70,.3));}
+.hero-img-badge{position:absolute;bottom:2rem;left:2rem;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:8px;padding:1rem 1.5rem;border-left:4px solid var(--red);}
+.hib-num{font-family:var(--display);font-size:2rem;font-weight:800;color:var(--red);line-height:1;}
+.hib-txt{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:1px;margin-top:2px;}
+
+/* HERO STATS */
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:2.5rem;opacity:0;animation:revealUp .8s var(--ease) 1s forwards;}
+.hstat{background:var(--off);border-radius:8px;padding:1.1rem;border-left:3px solid transparent;transition:all .3s;}
+.hstat:nth-child(1){border-color:var(--red);}
+.hstat:nth-child(2){border-color:var(--blue);}
+.hstat:nth-child(3){border-color:#2a9d8f;}
+.hstat:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.08);}
+.hstat-num{font-family:var(--display);font-size:1.6rem;font-weight:800;line-height:1;}
+.hstat-num.r{color:var(--red);}
+.hstat-num.b{color:var(--blue);}
+.hstat-num.g{color:#2a9d8f;}
+.hstat-lbl{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:3px;letter-spacing:.5px;}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--blue);padding:.75rem 0;overflow:hidden;}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 35s linear infinite;}
+.marquee-item{font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.6);padding:0 3rem;letter-spacing:1px;border-right:1px solid rgba(255,255,255,.1);display:inline-flex;align-items:center;gap:10px;}
+.marquee-item b{color:#fff;}
+.mi-dot{width:4px;height:4px;background:var(--red);border-radius:50%;flex-shrink:0;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── SECCIONES ── */
+.sec{padding:6rem 3rem;position:relative;}
+.sec.off{background:var(--off);}
+.sec.dark{background:var(--blue);}
+.inner{max-width:1200px;margin:0 auto;}
+.sec-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:.75rem;}
+.sec-eyebrow-line{width:28px;height:2px;background:var(--red);}
+.sec-eyebrow-txt{font-family:var(--mono);font-size:.7rem;color:var(--red);letter-spacing:3px;text-transform:uppercase;}
+.sec-eyebrow-txt.light{color:var(--blue3);}
+.sec-eyebrow-line.light{background:var(--blue3);}
+.sec-title{font-family:var(--display);font-size:clamp(2.2rem,4vw,3.2rem);font-weight:800;letter-spacing:-2px;line-height:1.02;margin-bottom:.9rem;}
+.sec-title .r{color:var(--red);}
+.sec-title .b{color:var(--blue);}
+.sec-title .lt{color:var(--blue3);}
+.sec-sub{color:var(--muted);font-size:1rem;line-height:1.75;max-width:500px;}
+.sec-sub.light{color:rgba(255,255,255,.6);}
+
+/* REVEAL ANIMATIONS */
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-l{opacity:0;transform:translateX(-50px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+.reveal-l.in{opacity:1;transform:translateX(0);}
+.reveal-r{opacity:0;transform:translateX(50px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+.reveal-r.in{opacity:1;transform:translateX(0);}
+.d1{transition-delay:.05s;}.d2{transition-delay:.12s;}.d3{transition-delay:.19s;}
+.d4{transition-delay:.26s;}.d5{transition-delay:.33s;}.d6{transition-delay:.4s;}
+.d7{transition-delay:.47s;}.d8{transition-delay:.54s;}
+
+/* ── TEMAS GRID con imágenes ── */
+.temas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--border);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3rem;}
+.tema-card{background:var(--white);cursor:none;position:relative;overflow:hidden;height:320px;transition:flex .4s var(--ease);}
+.tc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease),filter .5s;}
+.tema-card::before{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.95) 40%,rgba(15,23,42,.3) 100%);z-index:1;transition:background .4s;}
+.tema-card:hover::before{background:linear-gradient(to top,rgba(15,23,42,.98) 50%,rgba(15,23,42,.5) 100%);}
+.tema-card:hover .tc-img{transform:scale(1.08);filter:brightness(.8);}
+.tc-content{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:1.75rem;transform:translateY(0);transition:transform .4s var(--ease);}
+.tc-num{font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:3px;margin-bottom:.5rem;}
+.tc-name{font-family:var(--display);font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:.5rem;letter-spacing:-.5px;}
+.tc-desc{font-size:.83rem;color:rgba(255,255,255,.6);line-height:1.55;max-height:0;overflow:hidden;transition:max-height .5s var(--ease),opacity .4s;}
+.tema-card:hover .tc-desc{max-height:80px;opacity:1;}
+.tc-bar{position:absolute;bottom:0;left:0;width:0;height:3px;transition:width .5s var(--ease);}
+.tema-card:hover .tc-bar{width:100%;}
+.tc-tags{display:flex;gap:5px;margin-top:.75rem;flex-wrap:wrap;transform:translateY(10px);opacity:0;transition:all .4s var(--ease) .1s;}
+.tema-card:hover .tc-tags{transform:translateY(0);opacity:1;}
+.tc-tag{font-family:var(--mono);font-size:.62rem;padding:3px 8px;border-radius:2px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);}
+
+/* ── PORQUE / FEATURES (dark) ── */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;margin-top:3rem;}
+.feat-card{background:var(--blue);padding:2.5rem 2rem;transition:background .3s;position:relative;overflow:hidden;}
+.feat-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;transition:width .5s var(--ease);}
+.feat-card:hover{background:rgba(255,255,255,.06);}
+.feat-card:hover::after{width:100%;}
+.fc-1::after{background:var(--red);}
+.fc-2::after,.fc-3::after,.fc-4::after{background:var(--blue3);}
+.fc-5::after,.fc-6::after{background:var(--blue2);}
+.feat-num{font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.25);letter-spacing:3px;margin-bottom:1.5rem;}
+.feat-img-icon{width:52px;height:52px;border-radius:8px;object-fit:cover;margin-bottom:1.25rem;filter:brightness(.9) saturate(.8);}
+.feat-title{font-family:var(--display);font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.5rem;}
+.feat-desc{font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.6;}
+
+/* ── RECURSOS ── */
+.filtros{display:flex;gap:.5rem;flex-wrap:wrap;margin:2rem 0;}
+.filtro-btn{background:transparent;border:1.5px solid var(--border);color:var(--muted);padding:8px 22px;border-radius:4px;font-size:.78rem;cursor:none;font-family:var(--mono);font-weight:600;transition:all .25s var(--ease);}
+.filtro-btn.active,.filtro-btn:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.recursos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;}
+.recurso-card{background:var(--white);padding:1.75rem;cursor:none;transition:background .2s;position:relative;overflow:hidden;}
+.recurso-card:hover{background:var(--off);}
+.rc-accent{position:absolute;top:0;left:0;width:3px;height:0;transition:height .4s var(--ease);}
+.recurso-card:hover .rc-accent{height:100%;}
+.rc-l .rc-accent{background:var(--red);}
+.rc-v .rc-accent{background:var(--blue);}
+.rc-t .rc-accent{background:#fb8500;}
+.rc-p .rc-accent{background:#2a9d8f;}
+.rc-tipo{font-family:var(--mono);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:6px;}
+.rc-tipo-dot{width:5px;height:5px;border-radius:50%;}
+.rc-l .rc-tipo{color:var(--red);}.rc-l .rc-tipo-dot{background:var(--red);}
+.rc-v .rc-tipo{color:var(--blue);}.rc-v .rc-tipo-dot{background:var(--blue);}
+.rc-t .rc-tipo{color:#fb8500;}.rc-t .rc-tipo-dot{background:#fb8500;}
+.rc-p .rc-tipo{color:#2a9d8f;}.rc-p .rc-tipo-dot{background:#2a9d8f;}
+.rc-titulo{font-family:var(--display);font-weight:700;font-size:.97rem;margin-bottom:.35rem;line-height:1.3;}
+.rc-meta{font-size:.8rem;color:var(--muted);margin-bottom:.75rem;}
+.rc-tema{font-family:var(--mono);font-size:.64rem;padding:3px 8px;border-radius:2px;background:var(--off2);color:var(--muted);}
+.rc-arrow{position:absolute;top:1.5rem;right:1.5rem;color:var(--muted);font-size:.85rem;transition:all .3s var(--ease);font-family:var(--mono);}
+.recurso-card:hover .rc-arrow{color:var(--red);transform:translate(4px,-4px);}
+
+/* ── HISTORIA ── */
+.timeline{position:relative;margin:3rem 0;}
+.tl-line{position:absolute;left:20px;top:0;width:2px;background:linear-gradient(to bottom,var(--red),var(--blue));height:0;transition:height 1.5s var(--ease);}
+.tl-line.drawn{height:100%;}
+.tl-item{display:flex;gap:2.5rem;margin-bottom:3rem;padding-left:3rem;position:relative;}
+.tl-dot{position:absolute;left:12px;top:6px;width:18px;height:18px;border-radius:50%;border:3px solid var(--white);box-shadow:0 0 0 2px var(--red);background:var(--red);transform:scale(0);transition:transform .5s var(--ease);}
+.tl-item:last-child .tl-dot{background:var(--blue);box-shadow:0 0 0 2px var(--blue);}
+.tl-dot.pop{transform:scale(1);}
+.tl-year{font-family:var(--mono);font-size:.7rem;color:var(--red);font-weight:700;letter-spacing:2px;margin-bottom:.4rem;white-space:nowrap;}
+.tl-item:last-child .tl-year{color:var(--blue);}
+.tl-name{font-family:var(--display);font-size:1.5rem;font-weight:800;margin-bottom:.5rem;letter-spacing:-.5px;}
+.tl-desc{font-size:.9rem;color:var(--muted);line-height:1.7;}
+.tl-chip{display:inline-block;font-family:var(--mono);font-size:.65rem;padding:3px 10px;border-radius:2px;margin-top:.75rem;font-weight:700;}
+.tl-chip.r{background:rgba(230,57,70,.1);color:var(--red);}
+.tl-chip.b{background:rgba(29,53,87,.1);color:var(--blue);}
+
+/* MISION BOX */
+.mision-box{background:var(--blue);border-radius:16px;padding:3rem;color:#fff;position:relative;overflow:hidden;}
+.mb-deco1{position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(230,57,70,.12);top:-80px;right:-80px;}
+.mb-deco2{position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(168,218,220,.08);bottom:-50px;left:-50px;}
+.mb-label{font-family:var(--mono);font-size:.68rem;letter-spacing:3px;color:var(--blue3);margin-bottom:1rem;}
+.mb-title{font-family:var(--display);font-size:1.7rem;font-weight:800;line-height:1.15;margin-bottom:1rem;letter-spacing:-.5px;}
+.mb-desc{font-size:.9rem;color:rgba(255,255,255,.7);line-height:1.75;margin-bottom:1.5rem;}
+.mb-chips{display:flex;flex-wrap:wrap;gap:.5rem;}
+.mb-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:5px 12px;font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.75);}
+
+/* ── EQUIPO ── */
+.equipo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;margin-top:3rem;}
+.eq-card{border-radius:12px;overflow:hidden;position:relative;cursor:none;height:280px;transition:transform .4s var(--ease),box-shadow .4s;}
+.eq-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 24px 60px rgba(0,0,0,.18);}
+.eq-img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);}
+.eq-card:hover .eq-img{transform:scale(1.08);}
+.eq-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.95) 40%,rgba(15,23,42,.2) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem 1.25rem;}
+.eq-role-badge{font-family:var(--mono);font-size:.62rem;padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:.6rem;font-weight:700;}
+.eq-lider .eq-role-badge{background:var(--red);color:#fff;}
+.eq-mano .eq-role-badge{background:var(--blue2);color:#fff;}
+.eq-admin .eq-role-badge{background:#7209b7;color:#fff;}
+.eq-colab .eq-role-badge{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);}
+.eq-name{font-family:var(--display);font-size:1.05rem;font-weight:800;color:#fff;letter-spacing:-.3px;}
+.eq-rol{font-family:var(--mono);font-size:.68rem;color:rgba(255,255,255,.5);margin-top:.2rem;}
+
+/* INICIALES (fallback si no carga imagen) */
+.eq-initials{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:2.5rem;font-weight:800;color:#fff;}
+.eq-lider .eq-initials{background:linear-gradient(135deg,var(--red),#ff6b6b);}
+.eq-mano .eq-initials{background:linear-gradient(135deg,var(--blue),var(--blue2));}
+.eq-admin .eq-initials{background:linear-gradient(135deg,#7209b7,#9d4edd);}
+.eq-colab .eq-initials{background:linear-gradient(135deg,#2a9d8f,#52b788);}
+
+/* ── FUNDACIONES ── */
+.fund-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-top:2.5rem;}
+.fund-card{background:var(--white);padding:2rem 1.75rem;cursor:none;transition:background .25s;position:relative;overflow:hidden;}
+.fund-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width .4s var(--ease);}
+.fund-card:hover{background:var(--off);}
+.fund-card:hover::after{width:100%;}
+.fund-img{width:48px;height:48px;object-fit:cover;border-radius:8px;margin-bottom:1rem;filter:grayscale(.3);}
+.fund-name{font-family:var(--display);font-size:1rem;font-weight:800;margin-bottom:.25rem;}
+.fund-type{font-family:var(--mono);font-size:.68rem;color:var(--muted);}
+
+/* ── CTA ── */
+.cta-section{padding:6rem 3rem;}
+.cta-box{max-width:1200px;margin:0 auto;background:var(--blue);border-radius:20px;padding:5rem 4rem;display:grid;grid-template-columns:1fr auto;align-items:center;gap:3rem;position:relative;overflow:hidden;}
+.cta-deco{position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:rgba(230,57,70,.12);border-radius:50%;}
+.cta-deco2{position:absolute;bottom:-60px;left:40%;width:200px;height:200px;background:rgba(168,218,220,.07);border-radius:50%;}
+.cta-label{font-family:var(--mono);font-size:.68rem;color:var(--blue3);letter-spacing:3px;margin-bottom:1rem;}
+.cta-title{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);font-weight:800;color:#fff;letter-spacing:-1.5px;line-height:1.05;position:relative;z-index:1;}
+.cta-sub{color:rgba(255,255,255,.65);font-size:.95rem;margin-top:.75rem;position:relative;z-index:1;}
+.cta-btns{display:flex;flex-direction:column;gap:.75rem;flex-shrink:0;position:relative;z-index:1;}
+.cta-btn-w{background:#fff;color:var(--blue);padding:14px 32px;border-radius:4px;font-weight:700;font-family:var(--display);font-size:.95rem;border:none;cursor:none;text-decoration:none;display:inline-block;transition:all .3s var(--ease);white-space:nowrap;}
+.cta-btn-w:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.2);}
+.cta-btn-o{background:transparent;color:rgba(255,255,255,.8);padding:14px 32px;border-radius:4px;font-weight:600;font-family:var(--font);font-size:.95rem;border:1.5px solid rgba(255,255,255,.3);text-decoration:none;display:inline-block;cursor:none;transition:all .3s var(--ease);white-space:nowrap;text-align:center;}
+.cta-btn-o:hover{border-color:#fff;color:#fff;}
+
+/* ── FOOTER ── */
+footer{background:#0a1628;color:#fff;padding:4rem 3rem 2rem;}
+.f-in{max-width:1200px;margin:0 auto;}
+.f-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.f-logo{font-family:var(--display);font-size:1.7rem;font-weight:800;letter-spacing:-1px;margin-bottom:.6rem;}
+.f-logo span{color:var(--red);}
+.f-logo em{color:rgba(255,255,255,.5);font-style:normal;}
+.f-desc{font-size:.87rem;color:rgba(255,255,255,.4);line-height:1.7;max-width:260px;}
+.f-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:2px;color:rgba(255,255,255,.3);margin-bottom:1.25rem;text-transform:uppercase;}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.f-col a{color:rgba(255,255,255,.55);text-decoration:none;font-size:.87rem;transition:color .2s;}
+.f-col a:hover{color:#fff;}
+.f-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;font-size:.78rem;color:rgba(255,255,255,.25);font-family:var(--mono);}
+.f-yt-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:7px 18px;border-radius:4px;text-decoration:none;font-size:.75rem;font-family:var(--mono);cursor:none;transition:all .25s;}
+.f-yt-btn:hover{background:rgba(230,57,70,.25);border-color:var(--red);color:#fff;}
+
+/* TOPBAR */
+.topbar{background:var(--blue);height:36px;display:flex;align-items:center;justify-content:center;position:relative;z-index:301;overflow:hidden;}
+.topbar::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);animation:topbarShine 4s linear infinite;}
+@keyframes topbarShine{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+.topbar-text{font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.75);letter-spacing:1.5px;display:flex;align-items:center;gap:1.5rem;}
+.topbar-sep{width:4px;height:4px;border-radius:50%;background:var(--red);}
+.topbar-brand{color:#fff;font-weight:700;}
+.topbar-reg{font-size:.55rem;vertical-align:super;color:var(--blue3);}
+
+/* ── MODAL TEMA ── */
+.tema-modal{position:fixed;inset:0;z-index:600;background:rgba(10,22,40,.97);backdrop-filter:blur(20px);opacity:0;pointer-events:none;transition:opacity .4s var(--ease);overflow-y:auto;}
+.tema-modal.open{opacity:1;pointer-events:all;}
+.tm-inner{max-width:1100px;margin:0 auto;padding:5rem 3rem 4rem;}
+.tm-close{position:fixed;top:1.5rem;right:2rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.85rem;cursor:none;padding:8px 18px;border-radius:4px;font-family:var(--mono);transition:all .2s;z-index:10;}
+.tm-close:hover{background:var(--red);border-color:var(--red);}
+.tm-hero{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-bottom:4rem;}
+.tm-hero-img{border-radius:14px;overflow:hidden;height:360px;}
+.tm-hero-img img{width:100%;height:100%;object-fit:cover;}
+.tm-eyebrow{font-family:var(--mono);font-size:.68rem;color:var(--red);letter-spacing:3px;margin-bottom:.75rem;}
+.tm-title{font-family:var(--display);font-size:3rem;font-weight:800;color:#fff;letter-spacing:-2px;line-height:1;margin-bottom:1rem;}
+.tm-desc{color:rgba(255,255,255,.6);font-size:.95rem;line-height:1.75;}
+.tm-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:2.5rem;overflow-x:auto;}
+.tm-tab{background:transparent;border:none;color:rgba(255,255,255,.4);padding:1rem 1.5rem;font-family:var(--mono);font-size:.75rem;letter-spacing:1px;cursor:none;transition:all .25s;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tm-tab.active,.tm-tab:hover{color:#fff;border-bottom-color:var(--red);}
+.tm-panel{display:none;}
+.tm-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;animation:fadeUp .4s var(--ease);}
+.tm-panel-full{display:none;}
+.tm-panel-full.active{display:block;animation:fadeUp .4s var(--ease);}
+.tm-info-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.75rem;}
+.tm-info-block h3{font-family:var(--display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:.75rem;letter-spacing:-.3px;}
+.tm-info-block p{color:rgba(255,255,255,.6);font-size:.87rem;line-height:1.7;}
+.tm-formula-box{background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.2);border-radius:10px;padding:1.5rem;margin-top:1.25rem;}
+.tm-formula-label{font-family:var(--mono);font-size:.65rem;color:var(--red);letter-spacing:2px;margin-bottom:.6rem;}
+.tm-formula{font-family:var(--mono);font-size:1.1rem;color:#fff;font-weight:700;letter-spacing:.5px;}
+.tm-formula sub,.tm-formula sup{font-size:.65em;}
+.tm-img-block{border-radius:10px;overflow:hidden;height:220px;}
+.tm-img-block img{width:100%;height:100%;object-fit:cover;}
+.tm-example{background:rgba(29,53,87,.3);border-left:3px solid var(--blue2);border-radius:0 8px 8px 0;padding:1.25rem 1.5rem;margin-top:1rem;}
+.tm-example-label{font-family:var(--mono);font-size:.65rem;color:var(--blue3);letter-spacing:2px;margin-bottom:.5rem;}
+.tm-example p{color:rgba(255,255,255,.65);font-size:.85rem;line-height:1.65;}
+.tm-subtemas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
+.tm-subtema-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1.25rem 1.5rem;transition:background .25s;}
+.tm-subtema-card:hover{background:rgba(255,255,255,.08);}
+.tm-subtema-num{font-family:var(--mono);font-size:.65rem;color:var(--red);letter-spacing:2px;margin-bottom:.4rem;}
+.tm-subtema-title{font-family:var(--display);font-size:.97rem;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.tm-subtema-desc{font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.6;}
+
+/* ── HERRAMIENTAS ── */
+.herr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;margin-top:3rem;}
+.herr-card{background:var(--white);border:2px solid var(--border);border-radius:14px;overflow:hidden;transition:all .35s var(--ease);}
+.herr-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.12);border-color:var(--red);}
+.herr-img{height:180px;overflow:hidden;position:relative;}
+.herr-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+.herr-card:hover .herr-img img{transform:scale(1.07);}
+.herr-badge{position:absolute;top:.75rem;left:.75rem;background:var(--red);color:#fff;font-family:var(--mono);font-size:.62rem;padding:3px 10px;border-radius:3px;font-weight:700;letter-spacing:.5px;}
+.herr-body{padding:1.5rem;}
+.herr-name{font-family:var(--display);font-size:1.05rem;font-weight:800;margin-bottom:.4rem;letter-spacing:-.3px;}
+.herr-desc{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+.herr-steps{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+.herr-steps li{font-size:.8rem;color:var(--text);padding-left:1.1rem;position:relative;line-height:1.5;}
+.herr-steps li::before{content:'';position:absolute;left:0;top:.45rem;width:5px;height:5px;border-radius:50%;background:var(--red);}
+
+/* MODAL YT */
+.yt-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.9);backdrop-filter:blur(16px);opacity:0;pointer-events:none;transition:opacity .3s;}
+.yt-modal.open{opacity:1;pointer-events:all;}
+.yt-modal-in{width:min(860px,95vw);position:relative;}
+.yt-modal-x{position:absolute;top:-50px;right:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1rem;cursor:none;width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.yt-modal-x:hover{background:rgba(255,255,255,.2);}
+.yt-iframe{width:100%;aspect-ratio:16/9;border:none;border-radius:8px;}
+
+/* ── GALERÍA DE IMÁGENES ── */
+.gallery-section{padding:6rem 3rem;background:var(--text);overflow:hidden;}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:280px 280px;gap:6px;margin-top:3rem;border-radius:16px;overflow:hidden;}
+.g-item{position:relative;overflow:hidden;cursor:none;}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
+.g-item:hover img{transform:scale(1.08);}
+.g-item::after{content:'';position:absolute;inset:0;background:rgba(15,23,42,0);transition:background .4s;}
+.g-item:hover::after{background:rgba(15,23,42,.35);}
+.g-item-label{position:absolute;bottom:0;left:0;right:0;padding:1.25rem;font-family:var(--display);font-size:.9rem;font-weight:700;color:#fff;transform:translateY(100%);transition:transform .4s var(--ease);z-index:2;}
+.g-item:hover .g-item-label{transform:translateY(0);}
+.g-span2{grid-column:span 2;}
+.g-row2{grid-row:span 2;}
+
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;padding:6rem 2rem 4rem;text-align:center;}
+  .hero-right{display:none;}
+  .hero-btns{justify-content:center;}
+  .hero-stats{max-width:400px;margin:2.5rem auto 0;}
+  .temas-grid{grid-template-columns:repeat(2,1fr);}
+  .feat-grid{grid-template-columns:repeat(2,1fr);}
+  .cta-box{grid-template-columns:1fr;text-align:center;}
+  .cta-btns{flex-direction:row;justify-content:center;}
+  .f-top{grid-template-columns:1fr 1fr;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,220px);}
+  .g-span2{grid-column:span 1;}
+  .g-row2{grid-row:span 1;}
 }
-.gemini-badge{
-  background:linear-gradient(135deg,#4285f4,#34a853);
-  color:#fff;font-weight:700;font-size:0.7rem;
-  padding:3px 10px;border-radius:20px;white-space:nowrap;
-  font-family:var(--mono);
-}
-.gemini-banner span{color:var(--text);}
-.gemini-banner a{color:#4285f4;text-decoration:none;font-weight:600;}
-.gemini-banner a:hover{text-decoration:underline;}
-
-#chat-messages{height:380px;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;}
-#chat-messages::-webkit-scrollbar{width:3px;}
-#chat-messages::-webkit-scrollbar-thumb{background:var(--border2);}
-.msg{display:flex;gap:10px;animation:msgIn .3s ease;}
-@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;}}
-.msg.user{flex-direction:row-reverse;}
-.msg-av{width:32px;height:32px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.8rem;}
-.msg.bot .msg-av{background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;font-weight:700;font-family:var(--display);}
-.msg.user .msg-av{background:var(--card2);border:1px solid var(--border);}
-.msg-bubble{max-width:75%;padding:0.85rem 1.1rem;border-radius:10px;font-size:0.9rem;line-height:1.65;}
-.msg.bot .msg-bubble{background:var(--card2);border:1px solid var(--border);color:var(--text);}
-.msg.user .msg-bubble{background:rgba(0,255,180,0.12);border:1px solid rgba(0,255,180,0.2);color:var(--text);}
-.typing{display:flex;gap:4px;align-items:center;padding:0.85rem 1.1rem;}
-.typing span{width:6px;height:6px;border-radius:50%;background:#4285f4;animation:bounce .8s infinite;}
-.typing span:nth-child(2){animation-delay:.15s;}
-.typing span:nth-child(3){animation-delay:.3s;}
-@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
-.sugerencias{padding:0 1.5rem 1rem;display:flex;gap:0.5rem;flex-wrap:wrap;}
-.sugerencia{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:0.78rem;cursor:pointer;transition:all .2s;font-family:var(--mono);}
-.sugerencia:hover{border-color:#4285f4;color:#4285f4;background:rgba(66,133,244,0.05);}
-.chat-input-area{border-top:1px solid var(--border);padding:1rem 1.5rem;display:flex;gap:0.75rem;align-items:center;}
-#chat-input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:8px;font-size:0.9rem;font-family:var(--font);outline:none;transition:border-color .2s;}
-#chat-input:focus{border-color:#4285f4;}
-#chat-input::placeholder{color:var(--muted);}
-#send-btn{background:linear-gradient(135deg,#4285f4,#34a853);color:#fff;border:none;width:42px;height:42px;border-radius:8px;cursor:pointer;font-size:1.1rem;transition:transform .2s,opacity .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-#send-btn:hover{transform:scale(1.05);opacity:0.9;}
-#send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-
-/* API KEY SECTION */
-.api-key-row{padding:0.85rem 1.5rem;border-top:1px solid var(--border);background:var(--bg2);display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;}
-.api-key-label{font-family:var(--mono);font-size:0.72rem;color:var(--muted);white-space:nowrap;}
-#api-key-input{flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:6px;font-size:0.82rem;font-family:var(--mono);outline:none;transition:border-color .2s;}
-#api-key-input:focus{border-color:#4285f4;}
-#api-key-input::placeholder{color:var(--muted);}
-#save-key-btn{background:transparent;border:1px solid #4285f4;color:#4285f4;padding:8px 16px;border-radius:6px;font-size:0.8rem;cursor:pointer;font-family:var(--mono);white-space:nowrap;transition:all .2s;}
-#save-key-btn:hover{background:#4285f4;color:#fff;}
-.key-status{font-family:var(--mono);font-size:0.72rem;padding:4px 10px;border-radius:4px;display:none;}
-.key-status.ok{display:inline-block;background:rgba(52,168,83,0.15);color:#34a853;border:1px solid rgba(52,168,83,0.3);}
-
-/* INSTRUCCIONES */
-.instrucciones{padding:1rem 1.5rem;background:rgba(66,133,244,0.05);border-top:1px solid rgba(66,133,244,0.15);}
-.instrucciones details summary{
-  font-family:var(--mono);font-size:0.78rem;color:#4285f4;
-  cursor:pointer;padding:4px 0;list-style:none;
-}
-.instrucciones details summary::before{content:'▶ ';}
-.instrucciones details[open] summary::before{content:'▼ ';}
-.instrucciones ol{margin:0.75rem 0 0.5rem 1.2rem;font-size:0.82rem;color:var(--muted);line-height:2;}
-.instrucciones ol a{color:#4285f4;text-decoration:none;}
-.instrucciones ol a:hover{text-decoration:underline;}
-.instrucciones code{background:var(--bg2);padding:1px 6px;border-radius:3px;font-family:var(--mono);font-size:0.78rem;color:var(--accent);}
-
-/* FOOTER */
-footer{border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:0.85rem;}
-.footer-logo{font-family:var(--display);font-size:1.2rem;font-weight:800;color:var(--accent);margin-bottom:0.5rem;letter-spacing:-0.5px;}
-footer a{color:var(--muted);text-decoration:none;}
-footer a:hover{color:var(--accent);}
-
 @media(max-width:768px){
-  .nav-links,.nav-chat-btn{display:none;}
-  #chat-messages{height:280px;}
-  .stats-bar{flex-direction:column;}
-  .stat-item{border-right:none;border-bottom:1px solid var(--border);}
-  .stat-item:last-child{border-bottom:none;}
-  .api-key-row{flex-direction:column;align-items:stretch;}
+  .nav-links,.nav-btn{display:none;}
+  .temas-grid{grid-template-columns:1fr;}
+  .feat-grid{grid-template-columns:1fr;}
+  .f-top{grid-template-columns:1fr;}
+  .sec{padding:4rem 1.5rem;}
+  .hist-grid{grid-template-columns:1fr!important;}
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,180px);}
+  .gallery-section{padding:3rem 1.5rem;}
+  .topbar-text{font-size:.6rem;gap:.75rem;}
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo">EN <em>CORTO</em></div>
+<div id="progress"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- RELOJ EN VIVO -->
+<div id="live-clock" style="position:fixed;top:14px;right:1.5rem;z-index:400;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:8px;padding:6px 14px;display:flex;flex-direction:column;align-items:flex-end;line-height:1.35;box-shadow:0 4px 20px rgba(0,0,0,.08);">
+  <span id="clock-time" style="font-family:var(--mono);font-weight:700;font-size:.88rem;color:var(--red);letter-spacing:1.5px;"></span>
+  <span id="clock-date" style="font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.5px;"></span>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="logo" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span>EN</span><em>CORTO</em><sup style="font-size:.5rem;color:var(--blue2);vertical-align:super;margin-left:1px">®</sup></div>
   <ul class="nav-links">
     <li><a href="#temas">Temas</a></li>
     <li><a href="#recursos">Recursos</a></li>
-    <li><a href="#asistente">Asistente IA</a></li>
+    <li><a href="#herramientas">Herramientas</a></li>
+    <li><a href="#equipo">Equipo</a></li>
+    <li><a href="#porque">Nosotros</a></li>
   </ul>
-  <button class="nav-chat-btn" onclick="document.getElementById('asistente').scrollIntoView({behavior:'smooth'})">🤖 Chat IA</button>
+  <button class="nav-btn" onclick="document.getElementById('temas').scrollIntoView({behavior:'smooth'})"><span>Explorar Temas</span></button>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-tag">▶ Plataforma Educativa Tecnológica · México</div>
-  <h1>
-    <span class="line1">APRENDE</span>
-    <span class="line2">EN CORTO</span>
-  </h1>
-  <p>Electrónica, Robótica, Automatización, Programación y más — explicado directo al punto, con libros, teoría, práctica y un asistente IA disponible 24/7.</p>
-  <div class="hero-btns">
-    <a href="#temas" class="btn-main">Explorar Temas</a>
-    <a href="#asistente" class="btn-ghost">Hablar con el Bot</a>
+<section class="hero" style="padding-top:8rem;">
+  <div class="hero-left">
+    <div class="hero-tag"><div class="htag-line"></div><span class="htag-text">Plataforma Educativa · México</span></div>
+    <h1>
+      <span class="h1-line"><span class="h1-inner d1">APRENDE</span></span>
+      <span class="h1-line"><span class="h1-inner d2">EN CORTO</span></span>
+      <span class="h1-line"><span class="h1-inner d3">Tecnología para todos</span></span>
+    </h1>
+    <p class="hero-sub">Electrónica, Robótica, Automatización y Programación — explicado directo al punto, con recursos gratuitos y videos del canal.</p>
+    <div class="hero-btns">
+      <a href="#temas" class="btn-primary"><span>Explorar Temas</span></a>
+      <a href="#equipo" class="btn-sec">Conocer el Equipo</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num r" data-count="6">0</div><div class="hstat-lbl">ÁREAS TÉCNICAS</div></div>
+      <div class="hstat"><div class="hstat-num b">100%</div><div class="hstat-lbl">GRATUITO</div></div>
+      <div class="hstat"><div class="hstat-num g">2026</div><div class="hstat-lbl">AÑO ACTUAL</div></div>
+    </div>
   </div>
-  <div class="stats-bar">
-    <div class="stat-item"><div class="stat-num">∞</div><div class="stat-lbl">Libros & PDFs</div></div>
-    <div class="stat-item"><div class="stat-num">6</div><div class="stat-lbl">Áreas Técnicas</div></div>
-    <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-lbl">Asistente IA</div></div>
-    <div class="stat-item"><div class="stat-num">FREE</div><div class="stat-lbl">100% Gratis</div></div>
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80" alt="Electrónica y tecnología">
+      <div class="hero-img-overlay"></div>
+      <div class="hero-img-badge">
+        <div class="hib-num">21 · 03 · 2026</div>
+        <div class="hib-txt">EN CORTO · ACTIVO HOY</div>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item"><span class="mi-dot"></span><b>Electrónica</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Robótica</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Automatización PLC</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Python & C++</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Cálculo Diferencial</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Electricidad Industrial</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Arduino / ESP32</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>SCADA / HMI</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Transformada de Laplace</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Op-Amp & Filtros</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Electrónica</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Robótica</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Automatización PLC</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Python & C++</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Cálculo Diferencial</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Electricidad Industrial</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Arduino / ESP32</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>SCADA / HMI</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Transformada de Laplace</b></span>
+    <span class="marquee-item"><span class="mi-dot"></span><b>Op-Amp & Filtros</b></span>
+  </div>
+</div>
+
 <!-- TEMAS -->
-<section class="temas-section" id="temas">
-  <div class="sec-label">// áreas de conocimiento</div>
-  <h2 class="sec-title">Elige tu tema</h2>
-  <p class="sec-sub">Desde fundamentos hasta proyectos avanzados. Todo en corto, con teoría y práctica.</p>
-  <div class="temas-grid">
-    <div class="tema-card" onclick="filtrarTema('electronica')">
-      <span class="tema-count">⚡ Explorar →</span>
-      <span class="tema-icon">⚡</span>
-      <div class="tema-nombre">Electrónica</div>
-      <p class="tema-desc">Circuitos, componentes, señales analógicas y digitales. Desde Ley de Ohm hasta amplificadores.</p>
-      <div class="tema-tags">
-        <span class="tag" style="color:#00ffb4;border-color:rgba(0,255,180,0.3)">Circuitos</span>
-        <span class="tag" style="color:#00ffb4;border-color:rgba(0,255,180,0.3)">Arduino</span>
-        <span class="tag" style="color:#00ffb4;border-color:rgba(0,255,180,0.3)">Digital</span>
+<section class="sec" id="temas">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span class="sec-eyebrow-txt">Áreas de conocimiento</span></div>
+      <h2 class="sec-title">Elige tu <span class="r">área</span></h2>
+      <p class="sec-sub">Desde fundamentos hasta proyectos avanzados. Contenido directo al punto con teoría y práctica real.</p>
+    </div>
+    <div class="temas-grid reveal">
+      <div class="tema-card" onclick="abrirTema('electronica')">
+        <img class="tc-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Electrónica">
+        <div class="tc-bar" style="background:var(--red)"></div>
+        <div class="tc-content">
+          <div class="tc-num">01 — ELECTRÓNICA</div>
+          <div class="tc-name">Electrónica</div>
+          <div class="tc-desc">Circuitos, señales analógicas y digitales, amplificadores op-amp, microcontroladores y sistemas embebidos.</div>
+          <div class="tc-tags"><span class="tc-tag">Circuitos</span><span class="tc-tag">Arduino</span><span class="tc-tag">Op-Amp</span></div>
+        </div>
+      </div>
+      <div class="tema-card" onclick="abrirTema('robotica')">
+        <img class="tc-img" src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80" alt="Robótica">
+        <div class="tc-bar" style="background:var(--blue2)"></div>
+        <div class="tc-content">
+          <div class="tc-num">02 — ROBÓTICA</div>
+          <div class="tc-name">Robótica</div>
+          <div class="tc-desc">Diseño, construcción y programación de robots. Cinemática, control PID, sensores y ROS.</div>
+          <div class="tc-tags"><span class="tc-tag">Sensores</span><span class="tc-tag">Control PID</span><span class="tc-tag">ROS</span></div>
+        </div>
+      </div>
+      <div class="tema-card" onclick="abrirTema('electricidad')">
+        <img class="tc-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Electricidad">
+        <div class="tc-bar" style="background:#fb8500"></div>
+        <div class="tc-content">
+          <div class="tc-num">03 — ELECTRICIDAD</div>
+          <div class="tc-name">Electricidad</div>
+          <div class="tc-desc">Instalaciones eléctricas, potencia, motores trifásicos y normativas industriales NOM.</div>
+          <div class="tc-tags"><span class="tc-tag">Potencia</span><span class="tc-tag">Motores</span><span class="tc-tag">NOM</span></div>
+        </div>
+      </div>
+      <div class="tema-card" onclick="abrirTema('automatizacion')">
+        <img class="tc-img" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Automatización">
+        <div class="tc-bar" style="background:#2a9d8f"></div>
+        <div class="tc-content">
+          <div class="tc-num">04 — AUTOMATIZACIÓN</div>
+          <div class="tc-name">Automatización</div>
+          <div class="tc-desc">PLCs Siemens, SCADA, HMI, lógica escalera, neumática e Industria 4.0.</div>
+          <div class="tc-tags"><span class="tc-tag">PLC</span><span class="tc-tag">SCADA</span><span class="tc-tag">Siemens</span></div>
+        </div>
+      </div>
+      <div class="tema-card" onclick="abrirTema('programacion')">
+        <img class="tc-img" src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" alt="Programación">
+        <div class="tc-bar" style="background:#7209b7"></div>
+        <div class="tc-content">
+          <div class="tc-num">05 — PROGRAMACIÓN</div>
+          <div class="tc-name">Programación</div>
+          <div class="tc-desc">Python, C++, algoritmos, estructuras de datos y programación embebida para microcontroladores.</div>
+          <div class="tc-tags"><span class="tc-tag">Python</span><span class="tc-tag">C++</span><span class="tc-tag">Algoritmos</span></div>
+        </div>
+      </div>
+      <div class="tema-card" onclick="abrirTema('matematicas')">
+        <img class="tc-img" src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80" alt="Matemáticas">
+        <div class="tc-bar" style="background:#0096c7"></div>
+        <div class="tc-content">
+          <div class="tc-num">06 — MATEMÁTICAS</div>
+          <div class="tc-name">Matemáticas</div>
+          <div class="tc-desc">Álgebra lineal, cálculo diferencial, ecuaciones diferenciales y Transformada de Laplace.</div>
+          <div class="tc-tags"><span class="tc-tag">Cálculo</span><span class="tc-tag">Álgebra</span><span class="tc-tag">Laplace</span></div>
+        </div>
       </div>
     </div>
-    <div class="tema-card" onclick="filtrarTema('robotica')">
-      <span class="tema-count">🤖 Explorar →</span>
-      <span class="tema-icon">🤖</span>
-      <div class="tema-nombre">Robótica</div>
-      <p class="tema-desc">Diseño, construcción y programación de robots. Servomotores, sensores, cinemática y control.</p>
-      <div class="tema-tags">
-        <span class="tag" style="color:#4d9fff;border-color:rgba(77,159,255,0.3)">Sensores</span>
-        <span class="tag" style="color:#4d9fff;border-color:rgba(77,159,255,0.3)">Control</span>
-        <span class="tag" style="color:#4d9fff;border-color:rgba(77,159,255,0.3)">ROS</span>
-      </div>
+  </div>
+</section>
+
+<!-- POR QUÉ -->
+<section class="sec dark" id="porque">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sec-eyebrow-line light"></div><span class="sec-eyebrow-txt light">Por qué elegirnos</span></div>
+      <h2 class="sec-title" style="color:#fff">Todo lo que necesitas<br><span class="lt">en un solo lugar</span></h2>
+      <p class="sec-sub light">Diseñado para ingenieros, técnicos y estudiantes de tecnología en México.</p>
     </div>
-    <div class="tema-card" onclick="filtrarTema('electricidad')">
-      <span class="tema-count">🔌 Explorar →</span>
-      <span class="tema-icon">🔌</span>
-      <div class="tema-nombre">Electricidad</div>
-      <p class="tema-desc">Instalaciones eléctricas, potencia, motores trifásicos y normativas industriales.</p>
-      <div class="tema-tags">
-        <span class="tag" style="color:#ff6b35;border-color:rgba(255,107,53,0.3)">Potencia</span>
-        <span class="tag" style="color:#ff6b35;border-color:rgba(255,107,53,0.3)">Motores</span>
-        <span class="tag" style="color:#ff6b35;border-color:rgba(255,107,53,0.3)">NOM</span>
+    <div class="feat-grid reveal">
+      <div class="feat-card fc-1 d1">
+        <div class="feat-num">01</div>
+        <img class="feat-img-icon" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100&q=80" alt="Aprendizaje">
+        <div class="feat-title">Directo al punto</div>
+        <div class="feat-desc">Sin relleno. Cada concepto explicado de forma concisa y práctica para que aprendas rápido.</div>
       </div>
-    </div>
-    <div class="tema-card" onclick="filtrarTema('automatizacion')">
-      <span class="tema-count">🏭 Explorar →</span>
-      <span class="tema-icon">🏭</span>
-      <div class="tema-nombre">Automatización</div>
-      <p class="tema-desc">PLCs, SCADA, lógica escalera, neumática e Industria 4.0.</p>
-      <div class="tema-tags">
-        <span class="tag" style="color:#ffe033;border-color:rgba(255,224,51,0.3)">PLC</span>
-        <span class="tag" style="color:#ffe033;border-color:rgba(255,224,51,0.3)">SCADA</span>
-        <span class="tag" style="color:#ffe033;border-color:rgba(255,224,51,0.3)">Siemens</span>
+      <div class="feat-card fc-2 d2">
+        <div class="feat-num">02</div>
+        <img class="feat-img-icon" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=100&q=80" alt="Mobile">
+        <div class="feat-title">Aprende donde quieras</div>
+        <div class="feat-desc">Accede desde celular, tablet o computadora en cualquier momento del día.</div>
       </div>
-    </div>
-    <div class="tema-card" onclick="filtrarTema('programacion')">
-      <span class="tema-count">💻 Explorar →</span>
-      <span class="tema-icon">💻</span>
-      <div class="tema-nombre">Programación</div>
-      <p class="tema-desc">Python, C++, algoritmos, estructuras de datos y programación embebida.</p>
-      <div class="tema-tags">
-        <span class="tag" style="color:#bf5fff;border-color:rgba(191,95,255,0.3)">Python</span>
-        <span class="tag" style="color:#bf5fff;border-color:rgba(191,95,255,0.3)">C++</span>
-        <span class="tag" style="color:#bf5fff;border-color:rgba(191,95,255,0.3)">Algoritmos</span>
+      <div class="feat-card fc-3 d3">
+        <div class="feat-num">03</div>
+        <img class="feat-img-icon" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=100&q=80" alt="Gratis">
+        <div class="feat-title">100% Gratuito</div>
+        <div class="feat-desc">Todos los recursos, materiales y contenido sin costo. Siempre accesible.</div>
       </div>
-    </div>
-    <div class="tema-card" onclick="filtrarTema('matematicas')">
-      <span class="tema-count">📐 Explorar →</span>
-      <span class="tema-icon">📐</span>
-      <div class="tema-nombre">Matemáticas</div>
-      <p class="tema-desc">Álgebra, cálculo diferencial, ecuaciones diferenciales y transformada de Laplace.</p>
-      <div class="tema-tags">
-        <span class="tag" style="color:#ff4d4d;border-color:rgba(255,77,77,0.3)">Cálculo</span>
-        <span class="tag" style="color:#ff4d4d;border-color:rgba(255,77,77,0.3)">Álgebra</span>
-        <span class="tag" style="color:#ff4d4d;border-color:rgba(255,77,77,0.3)">Laplace</span>
+      <div class="feat-card fc-4 d4">
+        <div class="feat-num">04</div>
+        <img class="feat-img-icon" src="https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=100&q=80" alt="México">
+        <div class="feat-title">Hecho en México</div>
+        <div class="feat-desc">Contenido en español con ejemplos y normativas mexicanas (NOM).</div>
+      </div>
+      <div class="feat-card fc-5 d5">
+        <div class="feat-num">05</div>
+        <img class="feat-img-icon" src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=100&q=80" alt="Práctica">
+        <div class="feat-title">Teoría + Práctica</div>
+        <div class="feat-desc">Fundamentos teóricos y proyectos reales que puedes construir y aplicar.</div>
+      </div>
+      <div class="feat-card fc-6 d6">
+        <div class="feat-num">06</div>
+        <img class="feat-img-icon" src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=100&q=80" alt="Comunidad">
+        <div class="feat-title">Comunidad activa</div>
+        <div class="feat-desc">Fundaciones aliadas y colaboradores que apoyan el crecimiento de jóvenes en tecnología.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- RECURSOS -->
-<section class="recursos-section" id="recursos">
-  <div class="sec-label">// biblioteca de recursos</div>
-  <h2 class="sec-title">Libros, Videos & Teoría</h2>
-  <p class="sec-sub">Edita la sección "MIS RECURSOS" en el código para agregar tus propios libros y videos.</p>
-  <div class="filtros">
-    <button class="filtro-btn active" onclick="filtrar('todos',this)">Todos</button>
-    <button class="filtro-btn" onclick="filtrar('libro',this)">📚 Libros</button>
-    <button class="filtro-btn" onclick="filtrar('video',this)">🎬 Videos</button>
-    <button class="filtro-btn" onclick="filtrar('teoria',this)">📖 Teoría</button>
-    <button class="filtro-btn" onclick="filtrar('practica',this)">🔧 Práctica</button>
+<section class="sec off" id="recursos">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span class="sec-eyebrow-txt">Biblioteca</span></div>
+      <h2 class="sec-title">Libros, Videos <span class="b">& Teoría</span></h2>
+      <p class="sec-sub">Edita <code style="font-family:var(--mono);color:var(--red);font-size:.9em">misRecursos</code> en el código para agregar tus propios materiales.</p>
+    </div>
+    <div class="filtros reveal">
+      <button class="filtro-btn active" onclick="filtrar('todos',this)">Todos</button>
+      <button class="filtro-btn" onclick="filtrar('libro',this)">Libros</button>
+      <button class="filtro-btn" onclick="filtrar('video',this)">Videos</button>
+      <button class="filtro-btn" onclick="filtrar('teoria',this)">Teoria</button>
+      <button class="filtro-btn" onclick="filtrar('practica',this)">Practica</button>
+    </div>
+    <div class="recursos-grid reveal" id="recursos-grid"></div>
   </div>
-  <div class="recursos-grid" id="recursos-grid"></div>
 </section>
 
-<!-- ASISTENTE IA CON GEMINI -->
-<section class="chat-section" id="asistente">
-  <div class="sec-label">// asistente inteligente · powered by Google Gemini</div>
-  <h2 class="sec-title">Bot EN CORTO</h2>
-  <p class="sec-sub">Pregunta sobre electrónica, robótica, automatización, programación o matemáticas. Usa Google Gemini — 100% gratis.</p>
-  <div class="chat-container">
-    <div class="chat-header">
-      <div class="bot-avatar">G</div>
+<!-- HISTORIA + EQUIPO -->
+<section class="sec" id="equipo">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span class="sec-eyebrow-txt">Nuestra historia</span></div>
+      <h2 class="sec-title">De <span class="r">E VOLT</span> a <span class="b">EN CORTO</span></h2>
+      <p class="sec-sub">Un proyecto nacido con pasión por la educación tecnológica en México.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3.5rem;align-items:start" class="hist-grid">
       <div>
-        <div class="bot-name">Asistente EN CORTO <span style="font-size:0.75rem;color:#4285f4;font-family:var(--mono)">· Gemini</span></div>
-        <div class="bot-status">En línea · Especializado en tecnología · GRATIS</div>
+        <div class="timeline reveal-l">
+          <div class="tl-line" id="tl-line"></div>
+          <div class="tl-item">
+            <div class="tl-dot" id="dot0"></div>
+            <div>
+              <div class="tl-year">18 · AGO · 2025</div>
+              <div class="tl-name">E VOLT</div>
+              <div class="tl-desc">Nace el proyecto como <strong>E VOLT</strong> — una plataforma educativa tecnológica enfocada en electrónica, robótica y automatización para estudiantes mexicanos.</div>
+              <span class="tl-chip r">Fundación del proyecto</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" id="dot1"></div>
+            <div>
+              <div class="tl-year">2026</div>
+              <div class="tl-name">EN CORTO</div>
+              <div class="tl-desc">El proyecto evoluciona y adopta el nombre <strong>EN CORTO</strong> — aprender de forma concisa, directa y práctica. Se lanza el canal @vamosencorto en YouTube.</div>
+              <span class="tl-chip b">Renombramiento & expansión</span>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" id="dot2"></div>
+            <div>
+              <div class="tl-year">HOY</div>
+              <div class="tl-name">Creciendo</div>
+              <div class="tl-desc">Plataforma activa con recursos gratuitos, alianzas con fundaciones y una comunidad de jóvenes apasionados por la tecnología.</div>
+              <span class="tl-chip b">En expansión continua</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-r">
+        <div class="mision-box" style="display:none"></div>
       </div>
     </div>
 
-    <!-- BANNER GEMINI GRATIS -->
-    <div class="gemini-banner">
-      <span class="gemini-badge">✓ GRATIS</span>
-      <span>Este bot usa <strong>Google Gemini</strong> — completamente gratis. Obtén tu key en <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></span>
-    </div>
-
-    <div id="chat-messages">
-      <div class="msg bot">
-        <div class="msg-av">G</div>
-        <div class="msg-bubble">¡Hola! Soy el asistente de <strong>EN CORTO</strong> con tecnología <strong>Google Gemini</strong>. Estoy especializado en electrónica, robótica, electricidad, automatización, programación y matemáticas. ¿En qué te ayudo? 🚀</div>
+    <!-- EQUIPO -->
+    <div style="margin-top:5rem">
+      <div class="reveal">
+        <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span class="sec-eyebrow-txt">El equipo</span></div>
+        <h2 class="sec-title">Las personas detrás de <span class="r">EN CORTO</span></h2>
+      </div>
+      <div class="equipo-grid">
+        <div class="eq-card eq-lider reveal d1">
+          <div class="eq-initials">AM</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Director General</span>
+            <div class="eq-name">Alejandro Muñoz</div>
+            <div class="eq-rol">Director · Fundador</div>
+          </div>
+        </div>
+        <div class="eq-card eq-mano reveal d2">
+          <div class="eq-initials">MA</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Mano Derecha</span>
+            <div class="eq-name">Miguel Angel</div>
+            <div class="eq-rol">Subdirector</div>
+          </div>
+        </div>
+        <div class="eq-card eq-admin reveal d3">
+          <div class="eq-initials">EM</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Administradora</span>
+            <div class="eq-name">Eriac Montiel</div>
+            <div class="eq-rol">Administración</div>
+          </div>
+        </div>
+        <div class="eq-card eq-colab reveal d4">
+          <div class="eq-initials">BL</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Colaborador</span>
+            <div class="eq-name">Bryan Levi</div>
+            <div class="eq-rol">Colaborador</div>
+          </div>
+        </div>
+        <div class="eq-card eq-colab reveal d5">
+          <div class="eq-initials">LP</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Colaborador</span>
+            <div class="eq-name">Luis Polvo</div>
+            <div class="eq-rol">Colaborador</div>
+          </div>
+        </div>
+        <div class="eq-card eq-colab reveal d6">
+          <div class="eq-initials">EF</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Colaborador</span>
+            <div class="eq-name">Edwin Fernandez</div>
+            <div class="eq-rol">Colaborador</div>
+          </div>
+        </div>
+        <div class="eq-card eq-colab reveal d7">
+          <div class="eq-initials">MC</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Colaboradora</span>
+            <div class="eq-name">Monica Cervantes</div>
+            <div class="eq-rol">Colaboradora</div>
+          </div>
+        </div>
+        <div class="eq-card eq-colab reveal d8">
+          <div class="eq-initials">JG</div>
+          <div class="eq-overlay">
+            <span class="eq-role-badge">Colaborador</span>
+            <div class="eq-name">Joel Garcia</div>
+            <div class="eq-rol">Colaborador</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="sugerencias">
-      <button class="sugerencia" onclick="usarSugerencia(this)">¿Qué es un PLC?</button>
-      <button class="sugerencia" onclick="usarSugerencia(this)">Ley de Ohm explicada</button>
-      <button class="sugerencia" onclick="usarSugerencia(this)">Diferencia AC y DC</button>
-      <button class="sugerencia" onclick="usarSugerencia(this)">¿Cómo funciona Arduino?</button>
-      <button class="sugerencia" onclick="usarSugerencia(this)">¿Qué es Python?</button>
+    <!-- FUNDACIONES -->
+    <div style="margin-top:5rem">
+      <div class="reveal">
+        <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span class="sec-eyebrow-txt">Alianzas</span></div>
+        <h2 class="sec-title">Fundaciones que <span class="b">nos apoyan</span></h2>
+        <p class="sec-sub">Organizaciones que comparten nuestra misión de llevar educación tecnológica a más jóvenes de México.</p>
+      </div>
+      <div class="fund-grid reveal">
+        <div class="fund-card">
+          <img class="fund-img" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=100&q=80" alt="Fundación CLES">
+          <div class="fund-name">Fundacion CLES</div>
+          <div class="fund-type">EDUCACION & COMUNIDAD</div>
+        </div>
+        <div class="fund-card">
+          <img class="fund-img" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=100&q=80" alt="LideraTransforma">
+          <div class="fund-name">LideraTransforma</div>
+          <div class="fund-type">LIDERAZGO JUVENIL</div>
+        </div>
+        <div class="fund-card">
+          <img class="fund-img" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&q=80" alt="Cuida mi Vida">
+          <div class="fund-name">Cuida mi Vida</div>
+          <div class="fund-type">BIENESTAR & SALUD</div>
+        </div>
+        <div class="fund-card">
+          <img class="fund-img" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=100&q=80" alt="JovenesIngenieros">
+          <div class="fund-name">JovenesIngenieros</div>
+          <div class="fund-type">INGENIERIA JUVENIL</div>
+        </div>
+        <div class="fund-card">
+          <img class="fund-img" src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=100&q=80" alt="Robotrim">
+          <div class="fund-name">Robotrim</div>
+          <div class="fund-type">ROBOTICA & TECNOLOGIA</div>
+        </div>
+      </div>
     </div>
-
-    <div class="chat-input-area">
-      <input type="text" id="chat-input" placeholder="Escribe tu pregunta técnica..." maxlength="500" onkeydown="if(event.key==='Enter')enviar()"/>
-      <button id="send-btn" onclick="enviar()">➤</button>
-    </div>
-
-    <!-- API KEY GEMINI -->
-    <div class="api-key-row">
-      <span class="api-key-label">🔑 Google Gemini Key:</span>
-      <input type="password" id="api-key-input" placeholder="AIza... (pega aquí tu API Key de Google)"/>
-      <button id="save-key-btn" onclick="guardarKey()">Guardar</button>
-      <span class="key-status" id="key-status">✓ Guardada</span>
-    </div>
-
-    <!-- INSTRUCCIONES PARA OBTENER KEY -->
-    <div class="instrucciones">
-      <details>
-        <summary>¿Cómo obtener tu API Key de Google GRATIS? (clic para ver)</summary>
-        <ol>
-          <li>Ve a <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></li>
-          <li>Inicia sesión con tu cuenta de <strong>Gmail</strong></li>
-          <li>Haz clic en <code>Get API Key</code> → <code>Create API key</code></li>
-          <li>Copia la clave (empieza con <code>AIza...</code>)</li>
-          <li>Pégala arriba y haz clic en <strong>Guardar</strong></li>
-          <li>¡Listo! El bot funciona gratis 🎉</li>
-        </ol>
-      </details>
-    </div>
-
   </div>
 </section>
 
+<!-- GALERÍA -->
+<section class="gallery-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sec-eyebrow-line light"></div><span class="sec-eyebrow-txt light">Tecnologia en imágenes</span></div>
+      <h2 class="sec-title" style="color:#fff">El mundo que <span style="color:var(--red)">aprendes</span></h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,.5)">Electrónica, robótica, código y automatización — en cada imagen.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="g-item g-row2">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=85" alt="Circuito electrónico">
+        <div class="g-item-label">Electrónica</div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=500&q=85" alt="Robótica">
+        <div class="g-item-label">Robótica</div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&q=85" alt="Programación">
+        <div class="g-item-label">Programación</div>
+      </div>
+      <div class="g-item g-span2">
+        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=85" alt="Automatización">
+        <div class="g-item-label">Automatización Industrial</div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=85" alt="Electricidad">
+        <div class="g-item-label">Electricidad</div>
+      </div>
+      <div class="g-item">
+        <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500&q=85" alt="Matemáticas">
+        <div class="g-item-label">Matemáticas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box reveal">
+    <div class="cta-deco"></div>
+    <div class="cta-deco2"></div>
+    <div>
+      <div class="cta-label">EMPIEZA HOY</div>
+      <div class="cta-title">Aprende tecnologia sin limites</div>
+      <div class="cta-sub">Recursos gratuitos, temas tecnicos y un equipo comprometido con tu aprendizaje.</div>
+    </div>
+    <div class="cta-btns">
+      <a href="#temas" class="cta-btn-w">Explorar Temas</a>
+      <a href="https://www.youtube.com/@vamosencorto" target="_blank" class="cta-btn-o">Canal YouTube</a>
+    </div>
+  </div>
+</section>
+
+<!-- HERRAMIENTAS -->
+<section class="sec" id="herramientas">
+  <div class="inner">
+    <div class="reveal">
+      <div class="sec-eyebrow"><div class="sec-eyebrow-line"></div><span class="sec-eyebrow-txt">Herramientas</span></div>
+      <h2 class="sec-title">Como usar las <span class="r">herramientas</span></h2>
+      <p class="sec-sub">Instrumentos y software esenciales para ingenieria y tecnologia. Aprende a usarlos correctamente.</p>
+    </div>
+    <div class="herr-grid">
+      <div class="herr-card reveal d1">
+        <div class="herr-img">
+          <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=500&q=80" alt="Multimetro">
+          <span class="herr-badge">MEDICION</span>
+        </div>
+        <div class="herr-body">
+          <div class="herr-name">Multimetro Digital</div>
+          <div class="herr-desc">Mide voltaje, corriente, resistencia y continuidad en circuitos electronicos e instalaciones electricas.</div>
+          <ul class="herr-steps">
+            <li>Selecciona la magnitud a medir (VDC, VAC, A, Ohm)</li>
+            <li>Elige el rango adecuado o usa autorange</li>
+            <li>Conecta cables: rojo a + (V/Ohm) y negro a COM</li>
+            <li>Para corriente, inserta en serie con el circuito</li>
+            <li>Lee el resultado en la pantalla digital</li>
+          </ul>
+        </div>
+      </div>
+      <div class="herr-card reveal d2">
+        <div class="herr-img">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=80" alt="Osciloscopio">
+          <span class="herr-badge">ANALISIS</span>
+        </div>
+        <div class="herr-body">
+          <div class="herr-name">Osciloscopio</div>
+          <div class="herr-desc">Visualiza senales electricas en el tiempo. Mide frecuencia, amplitud, desfase y forma de onda.</div>
+          <ul class="herr-steps">
+            <li>Conecta la sonda al canal CH1 y la pinza a GND</li>
+            <li>Ajusta la escala de tiempo (Time/Div)</li>
+            <li>Ajusta la escala de voltaje (Volts/Div)</li>
+            <li>Usa el trigger para estabilizar la senal</li>
+            <li>Mide frecuencia: f = 1 / periodo</li>
+          </ul>
+        </div>
+      </div>
+      <div class="herr-card reveal d3">
+        <div class="herr-img">
+          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=500&q=80" alt="Arduino IDE">
+          <span class="herr-badge">SOFTWARE</span>
+        </div>
+        <div class="herr-body">
+          <div class="herr-name">Arduino IDE</div>
+          <div class="herr-desc">Entorno de programacion para microcontroladores Arduino y ESP32. Basado en C/C++.</div>
+          <ul class="herr-steps">
+            <li>Descarga Arduino IDE en arduino.cc</li>
+            <li>Instala el driver del microcontrolador</li>
+            <li>Selecciona la placa en Herramientas > Placa</li>
+            <li>Escribe codigo en setup() y loop()</li>
+            <li>Compila y sube con el boton Upload</li>
+          </ul>
+        </div>
+      </div>
+      <div class="herr-card reveal d4">
+        <div class="herr-img">
+          <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&q=80" alt="Python VSCode">
+          <span class="herr-badge">PROGRAMACION</span>
+        </div>
+        <div class="herr-body">
+          <div class="herr-name">Python + VS Code</div>
+          <div class="herr-desc">Entorno de desarrollo profesional para Python, ideal para ingenieria, datos y automatizacion.</div>
+          <ul class="herr-steps">
+            <li>Instala Python en python.org y VS Code en code.visualstudio.com</li>
+            <li>Instala la extension Python en VS Code</li>
+            <li>Crea un entorno virtual: python -m venv env</li>
+            <li>Instala librerias: pip install numpy matplotlib</li>
+            <li>Ejecuta con F5 o el boton Run</li>
+          </ul>
+        </div>
+      </div>
+      <div class="herr-card reveal d5">
+        <div class="herr-img">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=80" alt="TIA Portal">
+          <span class="herr-badge">PLC</span>
+        </div>
+        <div class="herr-body">
+          <div class="herr-name">TIA Portal (Siemens)</div>
+          <div class="herr-desc">Software profesional para programar PLCs Siemens S7-1200 y S7-1500 con Ladder, FBD y ST.</div>
+          <ul class="herr-steps">
+            <li>Crea un nuevo proyecto y agrega el PLC S7-1200</li>
+            <li>Configura la direccion IP del PLC</li>
+            <li>Programa en Ladder o Bloques de Funcion</li>
+            <li>Compila con Ctrl+B y verifica errores</li>
+            <li>Descarga al PLC con el boton Download</li>
+          </ul>
+        </div>
+      </div>
+      <div class="herr-card reveal d6">
+        <div class="herr-img">
+          <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500&q=80" alt="KiCad PCB">
+          <span class="herr-badge">DISENIO PCB</span>
+        </div>
+        <div class="herr-body">
+          <div class="herr-name">KiCad - Disenio PCB</div>
+          <div class="herr-desc">Software gratuito y profesional para disenar esquematicos y tarjetas de circuito impreso PCB.</div>
+          <ul class="herr-steps">
+            <li>Crea el esquematico en Eeschema</li>
+            <li>Asigna footprints a cada componente</li>
+            <li>Genera netlist y abre PCBnew</li>
+            <li>Coloca componentes y traza pistas de cobre</li>
+            <li>Exporta archivos Gerber para fabricacion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODALES DE TEMAS -->
+
+<!-- MODAL ELECTRONICA -->
+<div class="tema-modal" id="modal-electronica">
+  <button class="tm-close" onclick="cerrarTema('electronica')">X Cerrar</button>
+  <div class="tm-inner">
+    <div class="tm-hero">
+      <div>
+        <div class="tm-eyebrow">01 — ELECTRONICA</div>
+        <div class="tm-title">Electronica</div>
+        <div class="tm-desc">Control del flujo de electrones en semiconductores y circuitos para procesar informacion y controlar sistemas. Desde componentes basicos hasta microcontroladores modernos.</div>
+      </div>
+      <div class="tm-hero-img"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=85" alt="Electronica"></div>
+    </div>
+    <div class="tm-tabs">
+      <button class="tm-tab active" onclick="cambiarTab('electronica',0,this)">Fundamentos</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',1,this)">Diodos</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',2,this)">Transistores</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',3,this)">Op-Amp</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',4,this)">Digital</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',5,this)">Microcontroladores</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',6,this)">Sensores</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',7,this)">Fuentes</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',8,this)">PCB</button>
+      <button class="tm-tab" onclick="cambiarTab('electronica',9,this)">EMC</button>
+    </div>
+    <div id="electronica-tabs">
+      <div class="tm-panel active">
+        <div class="tm-info-block">
+          <h3>Ley de Ohm y conceptos basicos</h3>
+          <p>La electronica estudia el control del flujo de electrones en semiconductores. Los conceptos fundamentales son carga, corriente (I), tension (V) y resistencia (R). Los materiales se clasifican en conductores, semiconductores y aislantes.</p>
+          <div class="tm-formula-box"><div class="tm-formula-label">LEY DE OHM</div><div class="tm-formula">V = I × R</div></div>
+          <div class="tm-formula-box"><div class="tm-formula-label">POTENCIA ELECTRICA</div><div class="tm-formula">P = V × I = I² × R = V²/R</div></div>
+          <div class="tm-example"><div class="tm-example-label">EJEMPLO PRACTICO</div><p>Si tienes un LED con R=220Ω conectado a 5V: I = V/R = 5/220 = 22.7mA — corriente segura para el LED.</p></div>
+        </div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1608564697071-ddf911d81370?w=600&q=80" alt="Circuito basico"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Materiales semiconductores</h3><p>El silicio y germanio son los semiconductores mas usados. Su conductividad se controla mediante dopaje con impurezas tipo P (huecos) y tipo N (electrones). La union P-N forma el diodo.</p></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block">
+          <h3>Diodos y Rectificacion</h3>
+          <p>El diodo permite el paso de corriente en una sola direccion. La tension umbral es ~0.7V para silicio. Tipos: rectificador, Zener, LED, Schottky, fotodiodo y varactor.</p>
+          <div class="tm-formula-box"><div class="tm-formula-label">MODELO DIODO IDEAL</div><div class="tm-formula">V<sub>D</sub> ≈ 0.7V (silicio)</div></div>
+          <div class="tm-formula-box"><div class="tm-formula-label">PUENTE RECTIFICADOR</div><div class="tm-formula">V<sub>DC</sub> = 0.9 × V<sub>AC</sub></div></div>
+          <div class="tm-example"><div class="tm-example-label">APLICACION REAL</div><p>Un puente rectificador de 4 diodos convierte 12VAC del transformador en ~10.8VDC para alimentar circuitos electronicos.</p></div>
+        </div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=600&q=80" alt="Diodos"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Diodo Zener</h3><p>El diodo Zener conduce en inversa a un voltaje fijo (Vz). Es fundamental para regulacion de tension de referencia y proteccion contra sobretensiones en fuentes de alimentacion.</p></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block">
+          <h3>Transistores BJT y MOSFET</h3>
+          <p>El BJT controla corriente de colector mediante corriente de base. El MOSFET controla mediante voltaje de puerta, con muy alta impedancia de entrada y sin consumo de corriente de control.</p>
+          <div class="tm-formula-box"><div class="tm-formula-label">TRANSISTOR BJT</div><div class="tm-formula">I<sub>C</sub> = β × I<sub>B</sub></div></div>
+          <div class="tm-formula-box"><div class="tm-formula-label">GANANCIA TIPICA</div><div class="tm-formula">β (hFE) = 100 a 500</div></div>
+          <div class="tm-example"><div class="tm-example-label">EJEMPLO PRACTICO</div><p>Con β=200 y IB=50µA, el transistor conduce IC = 200×50µA = 10mA — suficiente para activar un rele de 5V.</p></div>
+        </div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Transistores"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>MOSFET de potencia</h3><p>Los MOSFET de potencia (IRF540, IRLZ44N) conmutan amperios con solo voltaje de puerta. Son la base de variadores de velocidad, cargadores y convertidores switching modernos.</p></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block">
+          <h3>Amplificadores Operacionales</h3>
+          <p>El Op-Amp es un amplificador diferencial de alta ganancia. Con realimentacion negativa se disenan: amplificador inversor, no inversor, sumador, integrador y diferenciador.</p>
+          <div class="tm-formula-box"><div class="tm-formula-label">AMPLIFICADOR INVERSOR</div><div class="tm-formula">V<sub>out</sub> = -(R<sub>f</sub>/R<sub>in</sub>) × V<sub>in</sub></div></div>
+          <div class="tm-formula-box"><div class="tm-formula-label">AMPLIFICADOR NO INVERSOR</div><div class="tm-formula">V<sub>out</sub> = (1 + R<sub>f</sub>/R<sub>1</sub>) × V<sub>in</sub></div></div>
+          <div class="tm-example"><div class="tm-example-label">EJEMPLO PRACTICO</div><p>Con Rf=10kΩ y Rin=1kΩ, ganancia del inversor = -10. Si Vin=0.5V entonces Vout=-5V.</p></div>
+        </div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=600&q=80" alt="Op-Amp"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Filtros activos</h3><p>Los filtros Butterworth y Chebyshev usan Op-Amps para filtrado de senal. Se usan en instrumentacion medica, audio profesional y acondicionamiento de sensores industriales.</p></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block">
+          <h3>Electronica Digital</h3>
+          <p>Trabaja con estados logicos 1 y 0. Compuertas AND, OR, NOT, NAND, NOR, XOR son bloques fundamentales. El algebra de Boole describe la logica combinacional.</p>
+          <div class="tm-formula-box"><div class="tm-formula-label">LEYES DE DE MORGAN</div><div class="tm-formula">¬(A·B) = ¬A + ¬B</div></div>
+          <div class="tm-formula-box"><div class="tm-formula-label">COMPUERTA NAND UNIVERSAL</div><div class="tm-formula">NAND(A,A) = NOT(A)</div></div>
+          <div class="tm-example"><div class="tm-example-label">APLICACION REAL</div><p>Un flip-flop D almacena un bit de informacion. 8 flip-flops forman un registro de 8 bits. Millones de ellos forman la RAM de tu computadora.</p></div>
+        </div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Digital"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Sistemas numericos</h3><p>Binario (base 2), octal (base 8) y hexadecimal (base 16) son sistemas usados en programacion. Ejemplo: 0xFF = 255 decimal = 11111111 binario.</p></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block">
+          <h3>Microcontroladores</h3>
+          <p>Integran procesador, memoria Flash, RAM y perifericos (GPIO, UART, SPI, I2C, ADC, PWM). Arduino, PIC, STM32 y ESP32 son los mas populares en educacion e industria.</p>
+          <div class="tm-formula-box"><div class="tm-formula-label">RESOLUCION ADC</div><div class="tm-formula">V<sub>min</sub> = V<sub>ref</sub> / 2<sup>N</sup></div></div>
+          <div class="tm-formula-box"><div class="tm-formula-label">EJEMPLO ADC 10-BIT</div><div class="tm-formula">V<sub>min</sub> = 5V / 1024 = 4.88mV</div></div>
+          <div class="tm-example"><div class="tm-example-label">CODIGO ARDUINO</div><p>int valor = analogRead(A0); — Lee el ADC del pin A0 y devuelve un valor entre 0 y 1023 proporcional al voltaje (0 a 5V).</p></div>
+        </div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1608564697071-ddf911d81370?w=600&q=80" alt="Microcontrolador"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>ESP32 y WiFi</h3><p>El ESP32 integra WiFi y Bluetooth con un procesador dual-core de 240MHz. Ideal para proyectos IoT, domótica y sistemas de monitoreo remoto inalambrico de bajo costo.</p></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">07</div><div class="tm-subtema-title">Sensores y Transductores</div><div class="tm-subtema-desc">Temperatura (PT100, NTC, LM35), presion (MEMS), humedad (capacitivo), aceleracion (IMU), luz (fotodiodo). El acondicionamiento adapta la senal al ADC.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Tipos principales</div><div class="tm-subtema-title">Clasificacion de sensores</div><div class="tm-subtema-desc">Activos (generan senal: termopar, piezoelectrico) y pasivos (modifican parametro: RTD, LDR, strain gauge). La eleccion depende de precision, rango y condiciones ambientales.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">08</div><div class="tm-subtema-title">Fuentes de Alimentacion</div><div class="tm-subtema-desc">Reguladores lineales (7805): simples pero ineficientes. Fuentes switching (SMPS): 85-95% eficiencia. Convertidores Buck (reductor), Boost (elevador), Flyback (aislado).</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Formula clave</div><div class="tm-subtema-title">Eficiencia de conversion</div><div class="tm-subtema-desc">η = P_salida / P_entrada × 100%. Un regulador lineal de 12V a 5V con 1A disipa 7W en calor. Un Buck switching disipa solo ~0.7W con 95% eficiencia.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">09</div><div class="tm-subtema-title">Disenio de PCB</div><div class="tm-subtema-desc">Proceso: esquematico en EDA → asignar footprints → layout → DRC → fabricacion. Herramientas: KiCad (gratis), Altium (profesional). Los planos GND reducen EMI.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Reglas basicas</div><div class="tm-subtema-title">Buenas practicas de layout</div><div class="tm-subtema-desc">Pistas de potencia: minimo 1mm. Senales: 0.2mm. Condensadores de desacoplo de 100nF junto a cada CI. Via de 0.8mm para conexion entre capas. GND en capa completa.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">10</div><div class="tm-subtema-title">Compatibilidad Electromagnetica EMC</div><div class="tm-subtema-desc">Asegura funcionamiento correcto sin interferencias. Tecnicas: planos de tierra, condensadores de desacoplo, filtros, blindaje metalico y trazado cuidadoso de pistas de alta frecuencia.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Normativa</div><div class="tm-subtema-title">Certificaciones requeridas</div><div class="tm-subtema-desc">Marcado CE requiere conformidad EMC en Europa (IEC 61000). FCC Part 15 en USA. Los ensayos se realizan en camara anecoica. Disenar con conciencia EMC desde el inicio es clave.</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ROBOTICA -->
+<div class="tema-modal" id="modal-robotica">
+  <button class="tm-close" onclick="cerrarTema('robotica')">X Cerrar</button>
+  <div class="tm-inner">
+    <div class="tm-hero">
+      <div>
+        <div class="tm-eyebrow">02 — ROBOTICA</div>
+        <div class="tm-title">Robotica</div>
+        <div class="tm-desc">Ciencia del diseno, construccion y operacion de robots. Combina mecanica, electronica, informatica e inteligencia artificial para crear sistemas autonomos.</div>
+      </div>
+      <div class="tm-hero-img"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=85" alt="Robotica"></div>
+    </div>
+    <div class="tm-tabs">
+      <button class="tm-tab active" onclick="cambiarTab('robotica',0,this)">Introduccion</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',1,this)">Cinematica</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',2,this)">Dinamica</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',3,this)">Sensores</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',4,this)">Control PID</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',5,this)">ROS</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',6,this)">SLAM</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',7,this)">Industrial</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',8,this)">IA en Robotica</button>
+      <button class="tm-tab" onclick="cambiarTab('robotica',9,this)">Medica</button>
+    </div>
+    <div id="robotica-tabs">
+      <div class="tm-panel active">
+        <div class="tm-info-block"><h3>Introduccion a la Robotica</h3><p>La robotica es la ciencia dedicada al diseno, construccion y operacion de robots. Se clasifican en industriales, moviles, humanoides y de servicio. Combina mecanica, electronica e IA.</p><div class="tm-formula-box"><div class="tm-formula-label">GRADOS DE LIBERTAD (DOF)</div><div class="tm-formula">DOF = 6 (traslacion X,Y,Z + rotacion Roll,Pitch,Yaw)</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO</div><p>Un brazo robotico de 6 DOF puede alcanzar cualquier posicion y orientacion en su espacio de trabajo, igual que el brazo humano.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80" alt="Robot industrial"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Clasificacion de robots</h3><p>Industriales: soldadura y ensamblaje. Moviles: AGVs y drones. Cobots: colaboran con humanos. Medicos: cirugia de precision. Cada tipo tiene arquitectura mecanica y sistema de control especifico.</p></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Cinematica de Robots</h3><p>Estudia el movimiento sin considerar fuerzas. La cinematica directa calcula la posicion del efector dando los angulos articulares. La inversa calcula los angulos dada la posicion deseada.</p><div class="tm-formula-box"><div class="tm-formula-label">JACOBIANO DE VELOCIDADES</div><div class="tm-formula">ẋ = J(q) × q̇</div></div><div class="tm-formula-box"><div class="tm-formula-label">PARAMETROS DENAVIT-HARTENBERG</div><div class="tm-formula">T = Rot(z,θ) × Trans(z,d) × Trans(x,a) × Rot(x,α)</div></div><div class="tm-example"><div class="tm-example-label">APLICACION</div><p>Para un robot de 2 DOF plano: x = L1·cos(θ1) + L2·cos(θ1+θ2), y = L1·sin(θ1) + L2·sin(θ1+θ2).</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Cinematica"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">03</div><div class="tm-subtema-title">Dinamica de Robots</div><div class="tm-subtema-desc">Relaciona fuerzas, pares y movimientos. Ecuaciones de Lagrange o Newton-Euler. Incluye matrices de inercia, terminos de Coriolis, centrifugos y gravitacionales para control preciso.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Formula</div><div class="tm-subtema-title">Ecuacion de movimiento</div><div class="tm-subtema-desc">M(q)·q̈ + C(q,q̇)·q̇ + G(q) = τ — Donde M es inercia, C son terminos de Coriolis, G es gravedad y τ son los pares aplicados por los actuadores en cada articulacion.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">04</div><div class="tm-subtema-title">Sensores en Robotica</div><div class="tm-subtema-desc">Propioceptivos: encoders, acelerometros, giroscopios. Exteroceptivos: camaras, LiDAR, ultrasonido, sensores de fuerza. La fusion sensorial combina datos para mayor robustez autonoma.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">LiDAR</div><div class="tm-subtema-title">Sensor de distancia por laser</div><div class="tm-subtema-desc">Mide distancias mediante pulsos laser. Resolucion angular de 0.1 grados. Alcance de 10 a 200m. Esencial para navegacion autonoma de vehiculos y robots moviles en interiores y exteriores.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Control PID en Robotica</h3><p>El PID regula el comportamiento dinamico del robot. Es el controlador mas usado por su simplicidad y efectividad para seguimiento de trayectorias y control de posicion articular.</p><div class="tm-formula-box"><div class="tm-formula-label">CONTROLADOR PID</div><div class="tm-formula">u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·(de/dt)</div></div><div class="tm-formula-box"><div class="tm-formula-label">ERROR</div><div class="tm-formula">e(t) = referencia(t) - salida(t)</div></div><div class="tm-example"><div class="tm-example-label">SINTONIZACION</div><p>Metodo Ziegler-Nichols: aumenta Kp hasta oscilacion → mide Ku y Tu → Kp=0.6Ku, Ti=Tu/2, Td=Tu/8.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80" alt="Control PID"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">06</div><div class="tm-subtema-title">ROS - Robot Operating System</div><div class="tm-subtema-desc">Framework open-source para desarrollo robotico. Arquitectura de nodos que se comunican via topics y servicios. Incluye Rviz, Gazebo y rosbag. ROS2 soporta tiempo real con DDS.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Comando basico</div><div class="tm-subtema-title">Publicar y suscribirse</div><div class="tm-subtema-desc">ros2 topic pub /cmd_vel geometry_msgs/Twist — Publica velocidades al robot. ros2 topic echo /scan — Muestra datos del LiDAR. La arquitectura modular facilita reuso de paquetes existentes.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">07</div><div class="tm-subtema-title">Robots Moviles y SLAM</div><div class="tm-subtema-desc">SLAM construye mapa mientras se localiza en el. Metodos: EKF-SLAM, FastSLAM, Graph-SLAM, ORB-SLAM visual. Algoritmos A* y RRT planifican rutas eficientes en tiempo real.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Aplicaciones</div><div class="tm-subtema-title">Donde se usa SLAM</div><div class="tm-subtema-desc">Aspiradoras roboticas (Roomba), vehiculos autonomos, drones de inspeccion, robots de almacen (Amazon), exploracion planetaria (Mars Rover). Opera sin GPS en entornos desconocidos.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">08</div><div class="tm-subtema-title">Robots Industriales y Cobots</div><div class="tm-subtema-desc">Brazos de 6 DOF (KUKA, ABB, FANUC) dominan manufactura. Cobots (Universal Robots, KUKA iiwa) trabajan con humanos con seguridad integrada. ISO 10218 e ISO/TS 15066 regulan seguridad.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">ROI tipico</div><div class="tm-subtema-title">Retorno de inversion</div><div class="tm-subtema-desc">La automatizacion robotica logra ROI en 1-3 anos en produccion masiva. Disponibilidad 24/7, reduccion de rechazos hasta 99%, consistencia de calidad superior a manufactura manual.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">09</div><div class="tm-subtema-title">IA en Robotica</div><div class="tm-subtema-desc">Aprendizaje por refuerzo (RL) entrena robots mediante prueba-error. CNN para vision. LLMs como planificadores de lenguaje natural. LfD: aprendizaje por demostracion del experto humano.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">10</div><div class="tm-subtema-title">Robotica Medica</div><div class="tm-subtema-desc">Da Vinci: cirugia minimamente invasiva. Exoesqueletos ReWalk: paralisis. Lokomat: rehabilitacion automatizada. Nanorobots: cirugia celular futura. Normas IEC 60601 y regulaciones FDA.</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ELECTRICIDAD -->
+<div class="tema-modal" id="modal-electricidad">
+  <button class="tm-close" onclick="cerrarTema('electricidad')">X Cerrar</button>
+  <div class="tm-inner">
+    <div class="tm-hero">
+      <div>
+        <div class="tm-eyebrow">03 — ELECTRICIDAD</div>
+        <div class="tm-title">Electricidad</div>
+        <div class="tm-desc">Instalaciones electricas, maquinas electricas, sistemas de distribucion y protecciones. Desde fundamentos de circuitos hasta sistemas trifasicos industriales.</div>
+      </div>
+      <div class="tm-hero-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85" alt="Electricidad"></div>
+    </div>
+    <div class="tm-tabs">
+      <button class="tm-tab active" onclick="cambiarTab('electricidad',0,this)">Circuitos CA</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',1,this)">Maquinas Electricas</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',2,this)">Transformadores</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',3,this)">Instalaciones</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',4,this)">Motores</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',5,this)">Potencia</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',6,this)">Protecciones</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',7,this)">Renovables</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',8,this)">Trifasico</button>
+      <button class="tm-tab" onclick="cambiarTab('electricidad',9,this)">Seguridad</button>
+    </div>
+    <div id="electricidad-tabs">
+      <div class="tm-panel active">
+        <div class="tm-info-block"><h3>Circuitos de Corriente Alterna</h3><p>La CA es la forma de electricidad usada en redes de distribucion. La tension y corriente varian sinusoidalmente con el tiempo. La impedancia combina resistencia, inductancia y capacitancia.</p><div class="tm-formula-box"><div class="tm-formula-label">IMPEDANCIA COMPLEJA</div><div class="tm-formula">Z = R + j(XL - XC)</div></div><div class="tm-formula-box"><div class="tm-formula-label">REACTANCIA INDUCTIVA</div><div class="tm-formula">XL = 2π × f × L</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO</div><p>A 60Hz, una bobina de 10mH tiene XL = 2π × 60 × 0.01 = 3.77Ω de reactancia inductiva.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Circuitos CA"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Factor de potencia</h3><p>El coseno del angulo de desfase entre tension y corriente. FP = P/S = cos(φ). Un FP bajo indica consumo ineficiente y requiere compensacion con condensadores para mejorar eficiencia.</p></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">02</div><div class="tm-subtema-title">Maquinas Electricas</div><div class="tm-subtema-desc">Motores de induccion (los mas usados en industria), motores sincrono (generadores), motores CC (control preciso de velocidad). Generadores convierten energia mecanica en electrica.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Ley de Faraday</div><div class="tm-subtema-title">Principio de operacion</div><div class="tm-subtema-desc">EMF = -N × dΦ/dt — La FEM inducida es proporcional al numero de espiras y la variacion del flujo magnetico. Este principio rige todos los transformadores y maquinas electricas rotativas.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">03</div><div class="tm-subtema-title">Transformadores</div><div class="tm-subtema-desc">Convierte tensiones CA manteniendo la potencia (con perdidas minimas). Relacion de transformacion: V1/V2 = N1/N2 = I2/I1. Eficiencia tipica: 95-99%. Usos: distribucion, aislamiento, adaptacion.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Formula clave</div><div class="tm-subtema-title">Relacion de transformacion</div><div class="tm-subtema-desc">n = N1/N2 = V1/V2 — Si un transformador tiene 1000 espiras primarias y 100 secundarias, transforma 220V a 22V. La potencia S = V×I se conserva (despreciando perdidas del nucleo).</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">04</div><div class="tm-subtema-title">Instalaciones Electricas</div><div class="tm-subtema-desc">Residenciales (NOM-001-SEDE), industriales y comerciales. Calculo de conductores por capacidad de corriente y caida de tension. Protecciones, puesta a tierra y canalizaciones segun norma.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Caida de tension</div><div class="tm-subtema-title">Calculo de conductores</div><div class="tm-subtema-desc">ΔV = 2 × ρ × L × I / S — Donde ρ es resistividad del cobre (0.0172 Ω·mm²/m), L es longitud, I es corriente y S es seccion del conductor. Maximo permitido: 3% en instalaciones residenciales.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Motores Electricos</h3><p>El motor de induccion trifasico es el motor mas usado en industria. Funciona por campo magnetico rotante. La velocidad sincrona depende de la frecuencia y el numero de polos.</p><div class="tm-formula-box"><div class="tm-formula-label">VELOCIDAD SINCRONA</div><div class="tm-formula">Ns = 120 × f / P (RPM)</div></div><div class="tm-formula-box"><div class="tm-formula-label">DESLIZAMIENTO</div><div class="tm-formula">s = (Ns - Nr) / Ns × 100%</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO</div><p>Motor 4 polos a 60Hz: Ns = 120×60/4 = 1800 RPM. Con deslizamiento del 3%, velocidad real = 1746 RPM.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Motor electrico"></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Potencia Electrica</h3><p>La potencia en sistemas electricos se divide en activa (P), reactiva (Q) y aparente (S). El triangulo de potencias relaciona estas tres magnitudes a traves del factor de potencia.</p><div class="tm-formula-box"><div class="tm-formula-label">TRIANGULO DE POTENCIAS</div><div class="tm-formula">S² = P² + Q²</div></div><div class="tm-formula-box"><div class="tm-formula-label">POTENCIA ACTIVA TRIFASICA</div><div class="tm-formula">P = √3 × VL × IL × cos(φ)</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO</div><p>Motor trifasico 220V, 10A, cos(φ)=0.85: P = √3 × 220 × 10 × 0.85 = 3.23 kW de potencia util.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Potencia"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">07</div><div class="tm-subtema-title">Protecciones Electricas</div><div class="tm-subtema-desc">Interruptores automaticos MCB protegen circuitos. Fusibles son proteccion simple. Diferenciales RCD detectan fugas desde 30mA. Reles de proteccion en media tension: sobrecorriente, diferencial, distancia.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">08</div><div class="tm-subtema-title">Energias Renovables</div><div class="tm-subtema-desc">Paneles fotovoltaicos: monocristalino, policristalino, CdTe. Aerogeneradores onshore y offshore. Hidroelectrica: turbinas Pelton, Francis, Kaplan. El costo solar bajo 90% en 10 anos.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Sistemas Trifasicos</h3><p>Tres corrientes alternas desfasadas 120° entre si. Mayor eficiencia que monofasico para igual potencia. Conexiones Estrella (Y) y Triangulo (Δ) con diferentes relaciones tension-corriente.</p><div class="tm-formula-box"><div class="tm-formula-label">CONEXION ESTRELLA</div><div class="tm-formula">VL = √3 × Vf ≈ 1.732 × Vf</div></div><div class="tm-formula-box"><div class="tm-formula-label">POTENCIA TRIFASICA</div><div class="tm-formula">P = √3 × VL × IL × cos(φ)</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO</div><p>Red trifasica 127V/fase en estrella: VL = √3 × 127 = 220V de tension de linea — la tension estandar en Mexico para instalaciones trifasicas.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Trifasico"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">10</div><div class="tm-subtema-title">Seguridad Electrica</div><div class="tm-subtema-desc">Umbrales de corriente: 1mA percepcion, 10mA contraccion muscular, 100mA fibrilacion ventricular (fatal). Protecciones: aislamiento, tierra, diferenciales, tension de seguridad menor a 50VCA.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Normativa</div><div class="tm-subtema-title">Normas aplicables en Mexico</div><div class="tm-subtema-desc">NOM-001-SEDE instalaciones electricas. NOM-029-STPS para trabajos en tension. EPP obligatorio: guantes dielectricos, casco, calzado y trajes resistentes al arco electrico segun nivel de riesgo.</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AUTOMATIZACION -->
+<div class="tema-modal" id="modal-automatizacion">
+  <button class="tm-close" onclick="cerrarTema('automatizacion')">X Cerrar</button>
+  <div class="tm-inner">
+    <div class="tm-hero">
+      <div>
+        <div class="tm-eyebrow">04 — AUTOMATIZACION</div>
+        <div class="tm-title">Automatizacion Industrial</div>
+        <div class="tm-desc">PLCs, SCADA, HMI, redes industriales y control de procesos. Desde la logica escalera hasta la Industria 4.0 con IoT y gemelos digitales.</div>
+      </div>
+      <div class="tm-hero-img"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=85" alt="Automatizacion"></div>
+    </div>
+    <div class="tm-tabs">
+      <button class="tm-tab active" onclick="cambiarTab('automatizacion',0,this)">PLCs</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',1,this)">SCADA</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',2,this)">Sensores Ind.</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',3,this)">Actuadores</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',4,this)">Redes Ind.</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',5,this)">PID Industrial</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',6,this)">Neumática</button>
+      <button class="tm-tab" onclick="cambiarTab('automatizacion',7,this)">Industria 4.0</button>
+    </div>
+    <div id="automatizacion-tabs">
+      <div class="tm-panel active">
+        <div class="tm-info-block"><h3>PLCs - Controladores Logicos Programables</h3><p>El PLC escanea ciclicamente entradas (sensores, botones), ejecuta el programa y actualiza salidas (actuadores, reles). Inventado en 1968 por Dick Morley para General Motors.</p><div class="tm-formula-box"><div class="tm-formula-label">CICLO DE ESCANEO PLC</div><div class="tm-formula">Leer Entradas → Ejecutar Programa → Actualizar Salidas</div></div><div class="tm-formula-box"><div class="tm-formula-label">LENGUAJES IEC 61131-3</div><div class="tm-formula">Ladder (LD), FBD, ST, SFC, IL</div></div><div class="tm-example"><div class="tm-example-label">LADDER BASICO</div><p>Contacto Normalmente Abierto I0.0 en serie con bobina Q0.0: si se activa el sensor I0.0, se activa la salida Q0.0 (motor, valvula, etc.).</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="PLC"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>PLCs mas usados en Mexico</h3><p>Siemens S7-1200/1500 (TIA Portal), Allen-Bradley CompactLogix (Studio 5000), Mitsubishi MELSEC, Omron NX/NJ. El S7-1200 es el mas ensenado en universidades tecnicas mexicanas.</p></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">SCADA</div><div class="tm-subtema-title">Supervision y Adquisicion de Datos</div><div class="tm-subtema-desc">Monitorea procesos distribuidos geograficamente. Componentes: MTU, RTUs/PLCs, red de comunicacion y software. Paquetes: Wonderware InTouch, IGNITION, WinCC, FactoryTalk.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Ciberseguridad</div><div class="tm-subtema-title">SCADA y amenazas digitales</div><div class="tm-subtema-desc">Stuxnet demostro la vulnerabilidad de sistemas industriales a ciberataques. Los SCADA modernos implementan segmentacion de redes, firewalls industriales y protocolo IEC 62443 para proteccion.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Sensores</div><div class="tm-subtema-title">Sensores Industriales 4-20mA</div><div class="tm-subtema-desc">Temperatura: termopar K (-200 a 1350°C), PT100 (-200 a 600°C). Presion: piezoresistivo. Nivel: ultrasonico, radar. Caudal: Coriolis, magnetico. Estandar 4-20mA inmune a ruido electrico.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Calibracion</div><div class="tm-subtema-title">Por que es obligatoria</div><div class="tm-subtema-desc">Un sensor mal calibrado genera productos defectuosos, danos a equipos o condiciones peligrosas. La calibracion periodica establece la relacion magnitud-senal con trazabilidad a patrones nacionales.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Actuadores</div><div class="tm-subtema-title">Tipos de actuadores industriales</div><div class="tm-subtema-desc">Neumaticos: limpios y rapidos para manufactura discreta. Hidraulicos: fuerzas enormes para prensas. Servomotores: posicionamiento preciso. VFDs: control de velocidad de motores de induccion.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">VFD</div><div class="tm-subtema-title">Variadores de frecuencia</div><div class="tm-subtema-desc">Controlan velocidad del motor variando frecuencia (0 a 60/50Hz) y voltaje. Ahorro energetico del 30-50% en bombas y ventiladores. Marcas: Siemens SINAMICS, ABB ACS, Danfoss VLT.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Redes</div><div class="tm-subtema-title">Redes Industriales</div><div class="tm-subtema-desc">PROFIBUS DP (Siemens, 12Mbps), DeviceNet (Allen-Bradley), Modbus RTU/TCP (universal), PROFINET (Ethernet industrial Siemens), EtherNet/IP (Rockwell). OPC-UA es estandar de Industria 4.0.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Modbus</div><div class="tm-subtema-title">Protocolo universal</div><div class="tm-subtema-desc">Protocolo simple y gratuito. Modbus RTU (RS-485 serie) y Modbus TCP (Ethernet). Funciones: 03 Read Holding Registers, 06 Write Single Register. Compatible con casi todos los dispositivos industriales.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Control PID en Procesos Industriales</h3><p>Mas del 95% de los lazos de control industrial usan PID. Mantiene variables de proceso (temperatura, presion, nivel, caudal, pH) en sus valores de referencia con minimo error.</p><div class="tm-formula-box"><div class="tm-formula-label">CONTROLADOR PID</div><div class="tm-formula">u(t) = Kp·e + Ki·∫e·dt + Kd·de/dt</div></div><div class="tm-formula-box"><div class="tm-formula-label">ZIEGLER-NICHOLS (METODO CLASICO)</div><div class="tm-formula">Kp=0.6Ku, Ti=Tu/2, Td=Tu/8</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO PRACTICO</div><p>Control de temperatura de horno: SP=200°C, PV=180°C, e=20°C. El integral elimina el error en estado estacionario para mantener exactamente 200°C.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="PID"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Neumatica</div><div class="tm-subtema-title">Sistemas Neumaticos e Hidraulicos</div><div class="tm-subtema-desc">Neumatica: compresor + FRL (filtro, regulador, lubricador) + electrovalvulas 5/2 y 5/3 + cilindros. Hidraulica: fuerzas enormes para prensas y maquinaria pesada. FESTO y SMC dominan el mercado.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Circuito basico</div><div class="tm-subtema-title">Secuencia A+B+A-B-</div><div class="tm-subtema-desc">Cilindro A avanza (A+), cilindro B avanza (B+), A retrocede (A-), B retrocede (B-). Se programa con relays o PLC mediante diagrama de secuencia. Presion tipica: 6-8 bar de trabajo.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Industria 4.0</div><div class="tm-subtema-title">Cuarta Revolucion Industrial</div><div class="tm-subtema-desc">Integra IoT Industrial, big data, IA, gemelos digitales, manufactura aditiva, AR/VR, robotica colaborativa y ciberseguridad. Plataformas: Siemens MindSphere, PTC ThingWorx, AWS IoT.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Mantenimiento predictivo</div><div class="tm-subtema-title">IA para prediccion de fallos</div><div class="tm-subtema-desc">Sensores IIoT monitorean vibracion, temperatura y corriente continuamente. Algoritmos de ML detectan anomalias horas antes del fallo. Reduce paradas no planificadas hasta 50% en plantas industriales.</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROGRAMACION -->
+<div class="tema-modal" id="modal-programacion">
+  <button class="tm-close" onclick="cerrarTema('programacion')">X Cerrar</button>
+  <div class="tm-inner">
+    <div class="tm-hero">
+      <div>
+        <div class="tm-eyebrow">05 — PROGRAMACION</div>
+        <div class="tm-title">Programacion</div>
+        <div class="tm-desc">Desde algoritmos basicos hasta programacion orientada a objetos, bases de datos y control de versiones. Python, C++, Git y mas.</div>
+      </div>
+      <div class="tm-hero-img"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=85" alt="Programacion"></div>
+    </div>
+    <div class="tm-tabs">
+      <button class="tm-tab active" onclick="cambiarTab('programacion',0,this)">Fundamentos</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',1,this)">Estructuras de Datos</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',2,this)">OOP</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',3,this)">Algoritmos</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',4,this)">Python</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',5,this)">C y C++</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',6,this)">Bases de Datos</button>
+      <button class="tm-tab" onclick="cambiarTab('programacion',7,this)">Git</button>
+    </div>
+    <div id="programacion-tabs">
+      <div class="tm-panel active">
+        <div class="tm-info-block"><h3>Fundamentos de Programacion</h3><p>Variables, tipos de datos, operadores, estructuras de control (if, while, for), funciones y modularidad. Los algoritmos son secuencias finitas de pasos para resolver problemas eficientemente.</p><div class="tm-formula-box"><div class="tm-formula-label">NOTACION BIG-O (COMPLEJIDAD)</div><div class="tm-formula">O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²)</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO PYTHON</div><p>def suma(a, b): return a + b — Funcion simple. Para n numeros: for i in range(n): total += lista[i] es O(n) lineal.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" alt="Programacion"></div><div class="tm-info-block" style="margin-top:1rem;"><h3>Paradigmas de programacion</h3><p>Imperativo (instrucciones secuenciales), OOP (objetos y clases), funcional (funciones puras sin efectos laterales) y declarativo (que hacer, no como). Python soporta todos los paradigmas.</p></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Estructuras</div><div class="tm-subtema-title">Estructuras de Datos</div><div class="tm-subtema-desc">Array O(1) acceso. Lista enlazada O(1) insercion. Pila LIFO (push/pop). Cola FIFO (enqueue/dequeue). Arbol BST O(log n) busqueda. Hash table O(1) promedio. Grafo para redes y rutas.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Cuando usar cual</div><div class="tm-subtema-title">Seleccion de estructura</div><div class="tm-subtema-desc">Acceso frecuente por indice → array. Inserciones/eliminaciones frecuentes → lista enlazada. Historial de operaciones → pila. Cola de tareas → cola. Busqueda rapida → hash table o BST.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">OOP</div><div class="tm-subtema-title">Programacion Orientada a Objetos</div><div class="tm-subtema-desc">Pilares: encapsulamiento (datos privados), herencia (reusar codigo), polimorfismo (misma interfaz diferente comportamiento), abstraccion (simplificar complejidad). Lenguajes: Java, C++, Python, C#.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">SOLID</div><div class="tm-subtema-title">Principios de diseno</div><div class="tm-subtema-desc">S: responsabilidad unica. O: abierto/cerrado. L: sustitucion Liskov. I: segregacion de interfaces. D: inversion de dependencias. Seguirlos produce codigo mantenible, testeable y extensible.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Algoritmos</div><div class="tm-subtema-title">Ordenamiento y Busqueda</div><div class="tm-subtema-desc">Bubble Sort O(n²). Merge Sort O(n log n). Quick Sort O(n log n) promedio. Heap Sort O(n log n). Busqueda lineal O(n). Busqueda binaria O(log n) — requiere lista ordenada.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Grafos</div><div class="tm-subtema-title">Algoritmos de grafos</div><div class="tm-subtema-desc">BFS (anchura): camino mas corto sin pesos. DFS (profundidad): detectar ciclos, componentes. Dijkstra: camino minimo con pesos positivos. A*: con heuristica para navegacion y videojuegos.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Python para Ingenieria</h3><p>Lenguaje mas popular para ingenieria, ciencia de datos e IA. NumPy para computacion numerica, SciPy para algoritmos cientificos, Matplotlib para graficas, Pandas para datos, Scikit-learn para ML.</p><div class="tm-formula-box"><div class="tm-formula-label">NUMPY - OPERACION VECTORIAL</div><div class="tm-formula">import numpy as np; A = np.array([1,2,3])</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO INGENIERIA</div><p>import numpy as np; t = np.linspace(0,1,1000); signal = np.sin(2*np.pi*60*t) — Genera 1 segundo de senal sinusoidal a 60Hz.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" alt="Python"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">C y C++</div><div class="tm-subtema-title">Lenguajes de sistemas</div><div class="tm-subtema-desc">C es rapido, portable y de bajo nivel. Punteros y gestion manual de memoria son su caracteristica distintiva. C++ anade OOP, templates y STL. Esenciales para embebidos, kernels y robotica.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Punteros en C</div><div class="tm-subtema-title">Concepto fundamental</div><div class="tm-subtema-desc">int *p = &x; — p guarda la direccion de x. *p accede al valor. Los punteros permiten manipulacion directa de memoria, paso por referencia y estructuras dinamicas como listas enlazadas y arboles.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">SQL</div><div class="tm-subtema-title">Bases de Datos Relacionales</div><div class="tm-subtema-desc">SELECT nombre FROM empleados WHERE salario > 10000 ORDER BY nombre — Consulta basica SQL. MySQL, PostgreSQL, SQLite son los RDBMS mas usados. Las transacciones ACID garantizan integridad.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Normalizacion</div><div class="tm-subtema-title">Diseno de base de datos</div><div class="tm-subtema-desc">1NF: elimina grupos repetidos. 2NF: elimina dependencias parciales. 3NF: elimina dependencias transitivas. Un buen diseno normalizado elimina redundancias y garantiza integridad referencial de datos.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Git</div><div class="tm-subtema-title">Control de Versiones</div><div class="tm-subtema-desc">git init, clone, add, commit, push, pull, merge, branch, rebase. Las ramas permiten desarrollo paralelo. GitHub/GitLab alojan repositorios. Pull Requests facilitan revision de codigo en equipo.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Flujo basico</div><div class="tm-subtema-title">GitFlow simplificado</div><div class="tm-subtema-desc">main: codigo en produccion. develop: integracion. feature/*: nuevas funcionalidades. hotfix/*: correcciones urgentes. Cada commit debe ser atomico con mensaje descriptivo del cambio realizado.</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MATEMATICAS -->
+<div class="tema-modal" id="modal-matematicas">
+  <button class="tm-close" onclick="cerrarTema('matematicas')">X Cerrar</button>
+  <div class="tm-inner">
+    <div class="tm-hero">
+      <div>
+        <div class="tm-eyebrow">06 — MATEMATICAS</div>
+        <div class="tm-title">Matematicas</div>
+        <div class="tm-desc">Algebra lineal, calculo diferencial e integral, ecuaciones diferenciales, Transformada de Laplace y Fourier. El lenguaje matematico de la ingenieria moderna.</div>
+      </div>
+      <div class="tm-hero-img"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&q=85" alt="Matematicas"></div>
+    </div>
+    <div class="tm-tabs">
+      <button class="tm-tab active" onclick="cambiarTab('matematicas',0,this)">Algebra Lineal</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',1,this)">Calculo Diferencial</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',2,this)">Calculo Integral</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',3,this)">Ec. Diferenciales</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',4,this)">Laplace</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',5,this)">Boole y Digital</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',6,this)">Calculo Vectorial</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',7,this)">Estadistica</button>
+      <button class="tm-tab" onclick="cambiarTab('matematicas',8,this)">Fourier y Senales</button>
+    </div>
+    <div id="matematicas-tabs">
+      <div class="tm-panel active">
+        <div class="tm-info-block"><h3>Algebra Lineal</h3><p>Vectores, matrices, espacios vectoriales y transformaciones lineales. Las matrices representan transformaciones y sistemas de ecuaciones. Los eigenvalores caracterizan transformaciones lineales.</p><div class="tm-formula-box"><div class="tm-formula-label">DETERMINANTE 2x2</div><div class="tm-formula">det(A) = ad - bc</div></div><div class="tm-formula-box"><div class="tm-formula-label">EIGENVALORES</div><div class="tm-formula">det(A - λI) = 0</div></div><div class="tm-example"><div class="tm-example-label">APLICACION EN INGENIERIA</div><p>En machine learning: PCA usa eigenvalores para reducir dimensionalidad. En robotica: la matriz de rotacion R (3x3) describe la orientacion del efector en el espacio cartesiano.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80" alt="Algebra lineal"></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Calculo Diferencial</h3><p>Estudia el cambio instantaneo de funciones. La derivada mide la tasa de cambio. Aplicaciones: maximos y minimos, optimizacion, velocidad e aceleracion, recta tangente, aproximacion de Taylor.</p><div class="tm-formula-box"><div class="tm-formula-label">DEFINICION DE DERIVADA</div><div class="tm-formula">f'(x) = lim[h→0] (f(x+h) - f(x)) / h</div></div><div class="tm-formula-box"><div class="tm-formula-label">REGLA DE LA CADENA</div><div class="tm-formula">d/dx[f(g(x))] = f'(g(x)) · g'(x)</div></div><div class="tm-example"><div class="tm-example-label">EJEMPLO ELECTRICO</div><p>Si v(t) = 5·sin(2πt), la corriente en un capacitor es i = C·dv/dt = C·5·2π·cos(2πt) = 10πC·cos(2πt).</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80" alt="Calculo"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Integral</div><div class="tm-subtema-title">Calculo Integral</div><div class="tm-subtema-desc">Operacion inversa de la derivada. Mide areas, volumenes y acumulaciones. Teorema Fundamental conecta derivada e integral. Tecnicas: sustitucion, partes, fracciones parciales, trigonometrica.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Formula</div><div class="tm-subtema-title">Integral definida</div><div class="tm-subtema-desc">∫[a,b] f(x)dx = F(b) - F(a) — Calcula el area bajo la curva. Aplicacion electrica: Q = ∫i(t)dt calcula la carga total en un capacitor. Trabajo: W = ∫F(x)dx con fuerza variable.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Ecuaciones Diferenciales</h3><p>Relacionan funciones con sus derivadas, modelando fenomenos dinamicos. ODEs de primer orden: variables separables, lineales. Segundo orden: coeficientes constantes. Metodo de Laplace simplifica la solucion.</p><div class="tm-formula-box"><div class="tm-formula-label">EDO LINEAL 1er ORDEN</div><div class="tm-formula">dy/dx + P(x)·y = Q(x)</div></div><div class="tm-formula-box"><div class="tm-formula-label">CIRCUITO RC (RESPUESTA)</div><div class="tm-formula">v(t) = V₀·(1 - e^(-t/RC))</div></div><div class="tm-example"><div class="tm-example-label">APLICACION RC</div><p>Un capacitor de 100µF cargando a traves de 1kΩ: τ = RC = 0.1s. Al tiempo t=τ, el capacitor tiene el 63.2% de la tension final de alimentacion.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80" alt="EDO"></div></div>
+      </div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Transformada de Laplace</h3><p>Convierte funciones del tiempo f(t) en funciones de la variable compleja s. Transforma ecuaciones diferenciales en algebraicas. Fundamental para diseno de sistemas de control y filtros.</p><div class="tm-formula-box"><div class="tm-formula-label">DEFINICION</div><div class="tm-formula">L{f(t)} = F(s) = ∫[0,∞] f(t)·e^(-st) dt</div></div><div class="tm-formula-box"><div class="tm-formula-label">PARES COMUNES</div><div class="tm-formula">u(t) → 1/s | e^(-at) → 1/(s+a) | sin(ωt) → ω/(s²+ω²)</div></div><div class="tm-example"><div class="tm-example-label">FUNCION DE TRANSFERENCIA</div><p>H(s) = Y(s)/U(s) — Caracteriza sistemas lineales. Un filtro RC pasa-bajas: H(s) = 1/(1+sRC). La frecuencia de corte es ωc = 1/RC rad/s.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80" alt="Laplace"></div></div>
+      </div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Boole</div><div class="tm-subtema-title">Algebra de Boole</div><div class="tm-subtema-desc">Variables 0 y 1. Operaciones AND (·), OR (+), NOT (¬). Leyes De Morgan: ¬(A·B) = ¬A+¬B. Mapas de Karnaugh minimizan expresiones booleanas. Base matematica de todos los computadores digitales.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Ejemplo</div><div class="tm-subtema-title">Simplificacion con Karnaugh</div><div class="tm-subtema-desc">Expresion: F = ABC + AB'C + A'BC se simplifica a F = AC + BC agrupando minterminos adyacentes en el mapa de Karnaugh de 3 variables, reduciendo de 3 a 2 productos necesarios en el circuito.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Vectorial</div><div class="tm-subtema-title">Calculo Vectorial</div><div class="tm-subtema-desc">Gradiente ∇f: direccion de maximo incremento. Divergencia ∇·F: fuentes de un campo vectorial. Rotacional ∇×F: rotacion del campo. Teoremas de Green, Stokes y Gauss-Ostrogradski.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Electromagnetismo</div><div class="tm-subtema-title">Ecuaciones de Maxwell</div><div class="tm-subtema-desc">∇·E = ρ/ε₀ (Ley de Gauss). ∇×B = µ₀J + µ₀ε₀∂E/∂t (Ampere-Maxwell). Estas 4 ecuaciones describen todos los fenomenos electromagneticos y son la base de las telecomunicaciones modernas.</div></div></div></div>
+      <div class="tm-panel"><div class="tm-subtemas"><div class="tm-subtema-card"><div class="tm-subtema-num">Estadistica</div><div class="tm-subtema-title">Probabilidad y Estadistica</div><div class="tm-subtema-desc">Distribucion Normal (Gaussiana): omnipresente. Binomial, Poisson, Exponencial. Inferencia: intervalos de confianza, pruebas de hipotesis t-student, ANOVA. Regresion lineal. Teorema de Bayes.</div></div><div class="tm-subtema-card"><div class="tm-subtema-num">Six Sigma</div><div class="tm-subtema-title">Control estadistico de calidad</div><div class="tm-subtema-desc">6σ significa 3.4 defectos por millon de oportunidades. Herramientas: DMAIC, cartas de control X-R, Cp y Cpk (capacidad de proceso). La estadistica es el fundamento del control de calidad industrial.</div></div></div></div>
+      <div class="tm-panel">
+        <div class="tm-info-block"><h3>Transformada de Fourier y Senales</h3><p>Descompone cualquier senal en suma de senoides de diferentes frecuencias. La FFT (Fast Fourier Transform) es el algoritmo mas importante en procesamiento digital de senales.</p><div class="tm-formula-box"><div class="tm-formula-label">TRANSFORMADA DE FOURIER</div><div class="tm-formula">F(ω) = ∫[-∞,∞] f(t)·e^(-jωt) dt</div></div><div class="tm-formula-box"><div class="tm-formula-label">COMPLEJIDAD FFT</div><div class="tm-formula">O(n log n) vs O(n²) de la DFT directa</div></div><div class="tm-example"><div class="tm-example-label">APLICACIONES</div><p>MP3 usa FFT para comprimir audio. WiFi/5G usa OFDM basado en FFT. MRI medico usa la transformada de Fourier 2D para reconstruir imagenes del interior del cuerpo humano.</p></div></div>
+        <div><div class="tm-img-block"><img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=600&q=80" alt="Fourier"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">EN CORTO</div>
-  <p>Plataforma educativa tecnológica — 100% gratis · Hecho en México 🇲🇽</p>
-  <p style="margin-top:0.5rem;font-size:0.78rem;"><a href="#temas">Temas</a> · <a href="#recursos">Recursos</a> · <a href="#asistente">Asistente IA</a></p>
+  <div class="f-in">
+    <div class="f-top">
+      <div>
+        <div class="f-logo"><span>EN</span> <em>CORTO</em></div>
+        <p class="f-desc">Plataforma educativa tecnologica hecha en Mexico. Electronica, robotica, automatizacion y mas — siempre gratis.</p>
+      </div>
+      <div class="f-col">
+        <h4>Plataforma</h4>
+        <ul>
+          <li><a href="#temas">Temas</a></li>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li><a href="#porque">Nosotros</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Temas</h4>
+        <ul>
+          <li><a href="#temas">Electronica</a></li>
+          <li><a href="#temas">Robotica</a></li>
+          <li><a href="#temas">Automatizacion</a></li>
+          <li><a href="#temas">Programacion</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="https://www.youtube.com/@vamosencorto" target="_blank">@vamosencorto</a></li>
+          <li><a href="#equipo">Equipo EN CORTO</a></li>
+          <li><a href="#equipo">Fundaciones</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>EN CORTO<sup style="font-size:.6em;vertical-align:super">®</sup> 2026 — Marca Registrada. Todos los derechos reservados.</span>
+      <a class="f-yt-btn" href="https://www.youtube.com/@vamosencorto" target="_blank">@vamosencorto en YouTube</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-// ══════════════════════════════════════════════
-// MIS RECURSOS — EDITA AQUÍ para agregar tus libros y videos
-// ══════════════════════════════════════════════
-const misRecursos = [
-  // FORMATO: {tipo, titulo, meta, tema, url}
-  // tipo: 'libro' | 'video' | 'teoria' | 'practica'
-  // tema: 'electronica' | 'robotica' | 'electricidad' | 'automatizacion' | 'programacion' | 'matematicas'
-  {tipo:'libro',   titulo:'Electrónica para Principiantes',    meta:'PDF · 320 páginas',       tema:'electronica',    url:'https://drive.google.com/'},
-  {tipo:'video',   titulo:'Curso Completo Arduino',            meta:'YouTube · 4h 30min',      tema:'electronica',    url:'https://youtube.com/'},
-  {tipo:'teoria',  titulo:'Ley de Ohm y Kirchhoff',            meta:'Artículo · 10 min',       tema:'electricidad',   url:'#'},
-  {tipo:'practica',titulo:'Proyecto: Semáforo con PLC',        meta:'Guía paso a paso',        tema:'automatizacion', url:'#'},
-  {tipo:'libro',   titulo:'Python para Ingenieros',            meta:'PDF · 450 páginas',       tema:'programacion',   url:'https://drive.google.com/'},
-  {tipo:'teoria',  titulo:'Cinemática de Robots',              meta:'Artículo · 15 min',       tema:'robotica',       url:'#'},
-  {tipo:'practica',titulo:'Instalación Eléctrica Residencial', meta:'Guía práctica completa',  tema:'electricidad',   url:'#'},
-  {tipo:'video',   titulo:'Cálculo Diferencial en 1 hora',     meta:'YouTube · 1h 02min',      tema:'matematicas',    url:'https://youtube.com/'},
-  {tipo:'libro',   titulo:'Transformada de Laplace',           meta:'PDF · 180 páginas',       tema:'matematicas',    url:'https://drive.google.com/'},
-  {tipo:'practica',titulo:'Robot Seguidor de Línea',           meta:'Proyecto con código',     tema:'robotica',       url:'#'},
-  {tipo:'teoria',  titulo:'Programación Ladder (Escalera)',    meta:'Artículo · 12 min',       tema:'automatizacion', url:'#'},
-  {tipo:'video',   titulo:'C++ para Microcontroladores',       meta:'YouTube · 2h 15min',      tema:'programacion',   url:'https://youtube.com/'},
+// ═══ CURSOR ═══
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+document.querySelectorAll('a,button,.tema-card,.recurso-card,.eq-card,.fund-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));
+});
+
+// ═══ PROGRESS BAR ═══
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement,b=document.body;
+  const pct=(h.scrollTop||b.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=pct+'%';
+  document.getElementById('main-nav').classList.toggle('scrolled',scrollY>40);
+});
+
+// ═══ SCROLL REVEAL ═══
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.1});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+
+// ═══ TIMELINE ANIMATION ═══
+const tlObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){
+    document.getElementById('tl-line').classList.add('drawn');
+    setTimeout(()=>document.getElementById('dot0')?.classList.add('pop'),200);
+    setTimeout(()=>document.getElementById('dot1')?.classList.add('pop'),600);
+    setTimeout(()=>document.getElementById('dot2')?.classList.add('pop'),1100);
+    tlObs.unobserve(e.target);
+  }
+}),{threshold:.2});
+const tlEl=document.querySelector('.timeline');if(tlEl)tlObs.observe(tlEl);
+
+// ═══ 3D TILT EN CARDS ═══
+document.querySelectorAll('.tema-card,.eq-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-.5)*16;
+    const y=((e.clientY-r.top)/r.height-.5)*-16;
+    card.style.transform=`perspective(700px) rotateX(${y}deg) rotateY(${x}deg) translateY(-8px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+
+// ═══ CONTADORES ═══
+function animCount(el,target,suffix=''){
+  let s=null;
+  (function step(ts){if(!s)s=ts;const p=Math.min((ts-s)/1400,1),ease=1-Math.pow(1-p,3);
+  el.textContent=Math.floor(ease*target)+(p>=1?suffix:'');p<1&&requestAnimationFrame(step);})(performance.now());
+}
+new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting&&e.target.dataset.count){animCount(e.target,+e.target.dataset.count);new IntersectionObserver(()=>{}).observe(e.target);}
+}),{threshold:.5}).observe?document.querySelectorAll('[data-count]').forEach(el=>{
+  new IntersectionObserver(([e])=>{if(e.isIntersecting){animCount(el,+el.dataset.count);}},{threshold:.5}).observe(el);
+}):null;
+
+// ═══ RECURSOS ═══
+const misRecursos=[
+  {tipo:'libro',   titulo:'Electronica para Principiantes',    meta:'PDF · 320 paginas',      tema:'electronica',    url:'#'},
+  {tipo:'video',   titulo:'Curso Completo Arduino',            meta:'YouTube · 4h 30min',     tema:'electronica',    url:'#'},
+  {tipo:'teoria',  titulo:'Ley de Ohm y Kirchhoff',            meta:'Articulo · 10 min',      tema:'electricidad',   url:'#'},
+  {tipo:'practica',titulo:'Proyecto: Semaforo con PLC',        meta:'Guia paso a paso',       tema:'automatizacion', url:'#'},
+  {tipo:'libro',   titulo:'Python para Ingenieros',            meta:'PDF · 450 paginas',      tema:'programacion',   url:'#'},
+  {tipo:'teoria',  titulo:'Cinematica de Robots',              meta:'Articulo · 15 min',      tema:'robotica',       url:'#'},
+  {tipo:'practica',titulo:'Instalacion Electrica Residencial', meta:'Guia practica completa', tema:'electricidad',   url:'#'},
+  {tipo:'video',   titulo:'Calculo Diferencial en 1 hora',     meta:'YouTube · 1h 02min',     tema:'matematicas',    url:'#'},
+  {tipo:'libro',   titulo:'Transformada de Laplace',           meta:'PDF · 180 paginas',      tema:'matematicas',    url:'#'},
+  {tipo:'practica',titulo:'Robot Seguidor de Linea',           meta:'Proyecto con codigo',    tema:'robotica',       url:'#'},
+  {tipo:'teoria',  titulo:'Programacion Ladder',               meta:'Articulo · 12 min',      tema:'automatizacion', url:'#'},
+  {tipo:'video',   titulo:'C++ para Microcontroladores',       meta:'YouTube · 2h 15min',     tema:'programacion',   url:'#'},
 ];
-
-const iconos = {libro:'📚',video:'🎬',teoria:'📖',practica:'🔧'};
-const clases = {libro:'tipo-libro',video:'tipo-video',teoria:'tipo-teoria',practica:'tipo-practica'};
-
-function renderRecursos(filtro){
-  const lista = filtro==='todos' ? misRecursos : misRecursos.filter(r=>r.tipo===filtro||r.tema===filtro);
-  document.getElementById('recursos-grid').innerHTML = lista.length
-    ? lista.map(r=>`
-        <div class="recurso-card" onclick="window.open('${r.url}','_blank')">
-          <span class="recurso-link">↗</span>
-          <div class="recurso-tipo ${clases[r.tipo]}">${iconos[r.tipo]} ${r.tipo.toUpperCase()}</div>
-          <div class="recurso-titulo">${r.titulo}</div>
-          <div class="recurso-meta">${r.meta}</div>
-          <span class="recurso-tema">${r.tema}</span>
-        </div>`).join('')
-    : '<p style="color:var(--muted);font-family:var(--mono);font-size:0.85rem;padding:2rem 0;">No hay recursos para este filtro aún.</p>';
+const rcls={libro:'rc-l',video:'rc-v',teoria:'rc-t',practica:'rc-p'};
+const rtxt={libro:'LIBRO',video:'VIDEO',teoria:'TEORIA',practica:'PRACTICA'};
+function renderRecursos(f){
+  const lista=f==='todos'?misRecursos:misRecursos.filter(r=>r.tipo===f||r.tema===f);
+  document.getElementById('recursos-grid').innerHTML=lista.length
+    ?lista.map((r,i)=>`<div class="recurso-card ${rcls[r.tipo]}" style="animation-delay:${i*.04}s" onclick="window.open('${r.url}','_blank')">
+      <div class="rc-accent"></div>
+      <span class="rc-arrow">↗</span>
+      <div class="rc-tipo"><span class="rc-tipo-dot"></span>${rtxt[r.tipo]}</div>
+      <div class="rc-titulo">${r.titulo}</div>
+      <div class="rc-meta">${r.meta}</div>
+      <span class="rc-tema">${r.tema}</span>
+    </div>`).join('')
+    :'<p style="color:var(--muted);font-family:var(--mono);font-size:.82rem;padding:2rem;grid-column:1/-1">No hay recursos para este filtro.</p>';
 }
-
-function filtrar(val, btn){
-  document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  renderRecursos(val);
-}
-
-function filtrarTema(tema){
-  document.getElementById('recursos').scrollIntoView({behavior:'smooth'});
-  setTimeout(()=>renderRecursos(tema), 400);
-}
-
+function filtrar(v,btn){document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('active'));btn&&btn.classList.add('active');renderRecursos(v);}
+function filtrarTema(t){document.getElementById('recursos').scrollIntoView({behavior:'smooth'});setTimeout(()=>renderRecursos(t),400);}
 renderRecursos('todos');
 
-// ══════════════════════════════════════════════
-// BOT IA CON GOOGLE GEMINI (100% GRATIS)
-// ══════════════════════════════════════════════
-let historial = [];
-let apiKey = localStorage.getItem('encorto_gemini_key') || '';
-if(apiKey){
-  document.getElementById('api-key-input').value = apiKey;
-  document.getElementById('key-status').classList.add('ok');
+// ═══ RELOJ EN VIVO ═══
+const dias=['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
+const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+function tick(){
+  const n=new Date();
+  const h=String(n.getHours()).padStart(2,'0');
+  const m=String(n.getMinutes()).padStart(2,'0');
+  const s=String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clock-time').textContent=`${h}:${m}:${s}`;
+  document.getElementById('clock-date').textContent=`${dias[n.getDay()]} ${String(n.getDate()).padStart(2,'0')}·${meses[n.getMonth()]}·${n.getFullYear()}`;
 }
+tick();setInterval(tick,1000);
 
-function guardarKey(){
-  const k = document.getElementById('api-key-input').value.trim();
-  if(!k || !k.startsWith('AIza')){
-    alert('⚠️ Ingresa una API Key válida de Google (debe empezar con AIza...)');
-    return;
+// ═══ MODALES DE TEMAS ═══
+function abrirTema(id){
+  const m=document.getElementById('modal-'+id);
+  if(m){m.classList.add('open');document.body.style.overflow='hidden';}
+}
+function cerrarTema(id){
+  const m=document.getElementById('modal-'+id);
+  if(m){m.classList.remove('open');document.body.style.overflow='';}
+}
+function cambiarTab(tema,idx,btn){
+  const cont=document.getElementById(tema+'-tabs');
+  if(!cont)return;
+  cont.querySelectorAll('.tm-panel,.tm-panel-full').forEach((p,i)=>{
+    p.classList.toggle('active',i===idx);
+  });
+  const tabs=btn.closest('.tm-tabs').querySelectorAll('.tm-tab');
+  tabs.forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+document.querySelectorAll('.tema-modal').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open'),document.body.style.overflow='';});
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.tema-modal.open').forEach(m=>{m.classList.remove('open');document.body.style.overflow='';});
   }
-  apiKey = k;
-  localStorage.setItem('encorto_gemini_key', k);
-  const status = document.getElementById('key-status');
-  status.classList.add('ok');
-  const btn = document.getElementById('save-key-btn');
-  btn.textContent = '✓ Guardada!';
-  btn.style.cssText = 'background:#34a853;color:#fff;border-color:#34a853;';
-  setTimeout(()=>{btn.textContent='Guardar';btn.style.cssText='';},2500);
-}
+});
 
-function agregarMsg(rol, html){
-  const div = document.getElementById('chat-messages');
-  const el = document.createElement('div');
-  el.className = `msg ${rol}`;
-  const isBot = rol==='bot';
-  el.innerHTML = `<div class="msg-av">${isBot?'G':'👤'}</div><div class="msg-bubble">${html}</div>`;
-  div.appendChild(el);
-  div.scrollTop = div.scrollHeight;
-}
-
-function mostrarTyping(){
-  const div = document.getElementById('chat-messages');
-  const el = document.createElement('div');
-  el.className = 'msg bot'; el.id = 'typing';
-  el.innerHTML = `<div class="msg-av">G</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-  div.appendChild(el);
-  div.scrollTop = div.scrollHeight;
-}
-
-async function enviar(){
-  const input = document.getElementById('chat-input');
-  const texto = input.value.trim();
-  if(!texto) return;
-
-  if(!apiKey){
-    agregarMsg('bot','⚠️ Necesitas tu <strong>API Key de Google Gemini</strong> (es gratis). Haz clic en "¿Cómo obtener tu API Key?" aquí abajo para ver los pasos.');
-    return;
-  }
-
-  input.value = '';
-  document.getElementById('send-btn').disabled = true;
-  agregarMsg('user', texto);
-
-  // Construir historial para Gemini
-  historial.push({role:'user', parts:[{text: texto}]});
-  mostrarTyping();
-
-  try {
-    const systemPrompt = `Eres el asistente "EN CORTO" de una plataforma educativa tecnológica para México. Eres experto en: Electrónica, Robótica, Electricidad industrial, Automatización (PLC/SCADA/Siemens), Programación (Python, C++, Arduino, lenguaje ladder) y Matemáticas técnicas (álgebra, cálculo, Laplace). REGLAS: Responde SIEMPRE en español. Sé conciso y claro (máximo 5 párrafos). Usa ejemplos prácticos. Tono amigable y directo. Si el código es necesario ponlo limpio. Si preguntan algo fuera de tecnología, redirige amablemente al tema técnico.`;
-
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          system_instruction: {parts:[{text: systemPrompt}]},
-          contents: historial,
-          generationConfig: {maxOutputTokens: 1000, temperature: 0.7}
-        })
-      }
-    );
-
-    const data = await res.json();
-    document.getElementById('typing')?.remove();
-
-    if(data.error){
-      let msg = '❌ Error: ';
-      if(data.error.status === 'INVALID_ARGUMENT') msg += 'API Key inválida. Verifica que la copiaste bien desde aistudio.google.com';
-      else if(data.error.status === 'PERMISSION_DENIED') msg += 'API Key sin permisos. Asegúrate de activar la API en Google AI Studio.';
-      else msg += data.error.message;
-      agregarMsg('bot', msg);
-      historial.pop();
-    } else {
-      const resp = data.candidates[0].content.parts[0].text;
-      historial.push({role:'model', parts:[{text: resp}]});
-      agregarMsg('bot', resp.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>'));
-    }
-  } catch(e) {
-    document.getElementById('typing')?.remove();
-    agregarMsg('bot','❌ Error de conexión. Verifica tu internet e intenta de nuevo.');
-    historial.pop();
-  }
-
-  document.getElementById('send-btn').disabled = false;
-  input.focus();
-}
-
-function usarSugerencia(btn){
-  document.getElementById('chat-input').value = btn.textContent;
-  enviar();
-}
+// ═══ PARALLAX HERO IMAGE ═══
+window.addEventListener('scroll',()=>{
+  const img=document.querySelector('.hero-img-wrap img');
+  if(img)img.style.transform=`scale(1.05) translateY(${scrollY*.15}px)`;
+});
 </script>
 </body>
 </html>
